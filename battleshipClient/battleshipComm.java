@@ -4,10 +4,16 @@ import java.io.Serializable;
 
 public class battleshipComm  implements Serializable {
 
+	//this stores the gameIndex used on the server side
+	//to link with the appropriate game in the list
+	public int gameIndex;
+	
 	private int boardIndex;
 	private int boardDataValue;
 	private String message;
 	private boolean gameOver;
+	private boolean placeShips;
+	private boolean p1Turn;
 	
 	
 	//This constructor assigns the index of the button the player clicked
@@ -33,6 +39,12 @@ public class battleshipComm  implements Serializable {
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
 	}
+	public void setplaceShips(boolean placeShips) {
+		this.placeShips = placeShips;
+	}
+	public void setp1Turn(boolean p1Turn) {
+		this.p1Turn = p1Turn;
+	}
 	
 	// Getters
 	public int getboardIndex() {
@@ -50,6 +62,15 @@ public class battleshipComm  implements Serializable {
 	public boolean getGameOver() {
 		return gameOver;
 	}
+	
+	public boolean getplaceShips() {
+		return placeShips;
+	}
+	
+	public boolean getp1Turn() {
+		return p1Turn;
+	}
+
 }
 	
 

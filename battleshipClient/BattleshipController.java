@@ -2,10 +2,14 @@ package battleshipClient;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
+import battleshipServer.battleshipComm;
+
 
 public class BattleshipController implements ActionListener{
 
@@ -77,7 +81,12 @@ public class BattleshipController implements ActionListener{
 	       }
 	    }
 		
-		bsdata.sendToServer();	
+		try {
+			bsdata.sendToServer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	public void receiveDataFromServer(battleshipComm bsc) {

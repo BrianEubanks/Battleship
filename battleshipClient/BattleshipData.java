@@ -1,5 +1,10 @@
 package battleshipClient;
 
+import java.io.IOException;
+
+import battleshipServer.battleshipComm;
+import bsClientComms.*;
+
 public class BattleshipData {
 
 	//send data to client sub system
@@ -15,6 +20,8 @@ public class BattleshipData {
 	
 	
 	private battleshipComm bsc;
+	
+	private BsClient bsclient;
 	
 	public void setboardIndex(int bi) {
 		boardIndex = bi;
@@ -32,11 +39,15 @@ public class BattleshipData {
 		message = msgText;
 	}
 	
-	public void sendToServer() {
+	public void setClient(BsClient bsclient) {
+		this.bsclient=bsclient;
+	}
+	
+	public void sendToServer() throws IOException {
 		System.out.println(message);
 		System.out.println("Send To Server "+boardIndex+" "+boardDataValue);
 		bsc = new battleshipComm(boardIndex);
-		//client.sendToServer(bsc);
+		bsclient.sendToServer(bsc);
 	}
 	
 }
