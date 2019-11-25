@@ -4,6 +4,7 @@ import ocsf.server.AbstractServer;
 import bsClientComms.LoginData;
 import bsClientComms.CreateAccountData;
 import bsClientComms.User;
+import battleshipServer.*;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -49,6 +50,11 @@ public class BsServer extends AbstractServer {
 					e.printStackTrace();
 				}
 			}
+		}
+		else if (arg0 instanceof battleshipComm) {
+			System.out.println("battleshipComm");
+			//handle game
+			
 		}
 		try {
 			log.append("Client " + arg1.getId() + " " + arg0);

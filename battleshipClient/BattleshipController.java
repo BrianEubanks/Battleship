@@ -15,6 +15,7 @@ public class BattleshipController implements ActionListener{
 
 	private BattleshipData bsdata;
 	private BattleshipView bsview;
+	private battleshipComm bscomm;
 	
 	private JButton[] opponent;
 	private JButton[] player;
@@ -89,8 +90,9 @@ public class BattleshipController implements ActionListener{
 		}	
 	}
 	
-	public void receiveDataFromServer(battleshipComm bsc) {
-		this.bsdata = bsdata;
+	public void receiveDataFromServer(battleshipComm bscomm) {
+		this.bscomm = bscomm;
+		//update data and screen with comm object
 	}
 	
 }

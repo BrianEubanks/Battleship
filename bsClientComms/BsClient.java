@@ -13,21 +13,32 @@ public class BsClient extends AbstractClient {
 	private JTextArea serverMsg;
 	private JTextField clientID;
 	
+	private BattleshipController bsc;
+	private BattleshipView bsview;
+	private BattleshipData bsdata;
 	
 	public BsClient() {
 		super("localhost",8300);
 	}
 	public void handleMessageFromServer(Object msg) {
-		System.out.println("Server Message received  "+msg);	
-		String message = (String)msg;
-		if (message.startsWith("username")){
-			message = message.substring(9);
-			clientID.setText(message);
-			new InitialPanel("Battleship Client", this);
+		if (msg instanceof battleshipComm){
+			System.out.println("Server BattleshipComm received");
+			bsc.receiveDataFromServer((battleshipServer.battleshipComm) msg);
+			
 		}
-		else {
-			serverMsg.append("Server: " + (String) msg+"\n");
+		else{
+			System.out.println("Server Message received  "+msg);	
+		
+			String message = (String)msg;
+			if (message.startsWith("username")){
+				message = message.substring(9);
+				clientID.setText(message);
+				new InitialPanel("Battleship Client", this);
+			}
 		}
+		//else {
+		//	serverMsg.append("Server: " + (String) msg+"\n");
+		//}
 		//else battlehsipcomms
 	}
 	public void connectionException(Throwable exception) {
@@ -42,9 +53,9 @@ public class BsClient extends AbstractClient {
 		status.setForeground(Color.GREEN);
 		//validate user first
 		//start game
-	      BattleshipController bsc = new BattleshipController();
-		  BattleshipView bsview = new BattleshipView();
-		  BattleshipData bsdata = new BattleshipData();
+	      bsc = new BattleshipController();
+		  bsview = new BattleshipView();
+		  bsdata = new BattleshipData();
 		  bsdata.setClient(this);
 		  bsc.setBattleshipData(bsdata);
 		  bsc.setBattleshipView(bsview);
