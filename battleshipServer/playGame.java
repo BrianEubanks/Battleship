@@ -45,6 +45,9 @@ public class playGame {
 	// used to determine which board to check and edit.
 	// true - player1
 	// false - player 2
+	public boolean placeShips;
+	private boolean placeShipsp1;
+	private boolean placeShipsp2;
 	private boolean p1Turn;
 	
 	//Message to Client
@@ -59,26 +62,170 @@ public class playGame {
 			p2boardData[index]=6;
 		}
 		//Set p1 and p2 Ships to 0
-		for(int index = 0; index < p1shipData.length; index++) {
-			p1shipData[index]=0;
-			p2shipData[index]=0;
-		}
+//		for(int index = 0; index < p1shipData.length; index++) {
+//			p1shipData[index]=0;
+//			p2shipData[index]=0;
+//		}
+		//Set ShipData to initial lenghts
+		//Set Counts to 0; Count will be initialized as the player adds ships to the board
+		p1shipData[0]=2;
+		p1shipData[1]=3;
+		p1shipData[2]=3;
+		p1shipData[3]=4;
+		p1shipData[4]=5;
+		p1shipCount=0;
+		p2shipData[0]=2;
+		p2shipData[1]=3;
+		p2shipData[2]=3;
+		p2shipData[3]=4;
+		p2shipData[4]=5;		
+		p2shipCount=0;
+		
 		//Players will place ships
 		
 		//Players will guess where their opponents ships are
-		//Set player1 turn to true;
+		//When all ships are placed, set to false
+		
+		placeShipsp1 = true;
+		placeShipsp2 = true;
+		placeShips = placeShipsp1 || placeShipsp2;
+		
+		//when place ships is false, the game starts.
+		
+		//Set player1 turn to true. Use this to alternate turns in gameplay
 		p1Turn = true;
 
-		
-		
 	}
 	
+	//For now!
+
+	// Add Check to rotate ships vertical?
+	
+	public boolean addShipToP1Board(int boardIndex) {
+		int index = 0;
+		int checkIndex = 0;
+		int shipDataPoints = p1shipData[p1shipCount];
+		
+		//check for wrapping at end of line
+		if((boardIndex%10)+shipDataPoints>9) {
+			return false;
+		}
+		
+		//check for overlap before adding ship
+		while (checkIndex < shipDataPoints) {
+			if(p1boardData[boardIndex+checkIndex]!=6){
+				//if any data point is not water, there is an overlap with another ship
+				return false;
+			}
+			checkIndex++;
+		}
+		// add the ship to the boardData
+		while (index < shipDataPoints) {
+			p1boardData[boardIndex+index]=shipDataPoints;
+			index++;
+		}
+		
+		p1shipCount++;
+		return true;
+	}
+	
+	public boolean addShipToP2Board(int boardIndex) {
+		
+		
+		return true;
+	}
 	
 	public void placeShips(boolean player1, int boardIndex) {
 		//assign ship to boarddata
 		//initialize shipdata to length
+		
+		//place player 1's ships
+		if(player1) {
+			switch(p1boardData[boardIndex]) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				//ship
+				//change to shiphit
+				//decrement ship no
+				messageToPlayer = new String("There is already a ship here!");
+				//p1shipData[p1boardData[boardIndex]]--;
+				//p1boardData[boardIndex]=5;
+				//p1Turn = false;
+				break;
+			case 5:
+				//already hit here
+				//does not change turn
+				messageToPlayer = new String("Board Data Error: 5");
+				break;
+			case 6:
+				//water
+				//Place a ship here********************************************
+				messageToPlayer = new String("AddShipToP1Board");
+				//p1boardData[boardIndex]=7;
+				p1Turn = addShipToP1Board(boardIndex);
+				break;
+			case 7:
+				//watermiss
+				//already missed here
+				//does not change turn
+				messageToPlayer = new String("Board Data Error: 7");
+				break;
+			default:
+				//data error
+				messageToPlayer = new String("Board Data Error, something went wrong");
+				break;
+			}
+		}
+		//place player 2's ships
+		else if(!player1) {
+			switch(p1boardData[boardIndex]) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				//ship
+				//change to shiphit
+				//decrement ship no
+				messageToPlayer = new String("There is already a ship here!");
+				//p1shipData[p1boardData[boardIndex]]--;
+				//p1boardData[boardIndex]=5;
+				//p1Turn = false;
+				break;
+			case 5:
+				//already hit here
+				//does not change turn
+				messageToPlayer = new String("Board Data Error: 5");
+				break;
+			case 6:
+				//water
+				//Place a ship here********************************************
+				messageToPlayer = new String("AddShiptoP2Board");
+				//p1boardData[boardIndex]=7;
+				p1Turn = addShipToP2Board(boardIndex);
+				break;
+			case 7:
+				//watermiss
+				//already missed here
+				//does not change turn
+				messageToPlayer = new String("Board Data Error: 7");
+				break;
+			default:
+				//data error
+				messageToPlayer = new String("Board Data Error, something went wrong");
+				break;
+			}
+		}
+		
 	}
 	
+	
+	//Check to make sure a ship wasn't sunk during turn
+	//If all ships are sunk game over
+	// run endGame
 	public void checkShips(boolean player1){
 		if (player1) {
 			//check player 2 ships
@@ -92,7 +239,14 @@ public class playGame {
 	
 	public void turn(boolean player1, int boardIndex) {
 		
-		if (player1 != p1Turn) {
+		// This first if should not ever be true
+		// We Check for placeships in BattleshipGame before calling turn() or placeShips();
+		//
+		if (placeShips) {
+			messageToPlayer = new String("Waiting on placing Ships?");
+		}
+		
+		else if (player1 != p1Turn) {
 			// its not your turn!!
 			// send back to client
 			messageToPlayer = new String("It's Not Your Turn!!!");
@@ -182,6 +336,8 @@ public class playGame {
 		}
 	}
 	
+	
+	//End Game
 	public void endGame() {
 	
 	}

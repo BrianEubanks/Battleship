@@ -82,6 +82,15 @@ public class BattleshipView extends JFrame{
 	    Image newimg4 = img4.getScaledInstance(this.getSize().height/12, this.getSize().width/12,  java.awt.Image.SCALE_SMOOTH);
 	    bshiphit = new ImageIcon(newimg4);
 	    
+		// 0 - ship length 2
+		// 1 - ship length 3
+		// 2 - ship length 3
+		// 3 - ship length 4
+		// 4 - ship length 5
+		// 5 - ship hit
+		// 6 - water
+		// 7 - water miss
+	    
 	 // Message Panel
 	 	JPanel msgPanel = new JPanel();
 	 	getContentPane().add(msgPanel, BorderLayout.NORTH);
@@ -111,7 +120,7 @@ public class BattleshipView extends JFrame{
 	    for (i = 0; i < opponent.length; i++)
 	    {
 	       opponentData[i]=(i%2)+2;
-	    	if(opponentData[i]==2) {
+	    	if(opponentData[i]==7) {
 	    		opponent[i]=new JButton(watermiss);
 		    	boardPanel.add(opponent[i]);
 	    	}
@@ -123,7 +132,7 @@ public class BattleshipView extends JFrame{
 	    for (i = 0; i < player.length; i++)
 	    {
 	    	playerData[i]=i%2;
-	    	if(playerData[i]==0) {
+	    	if(playerData[i]==6) {
 	    		player[i]=new JButton(water);
 		    	boardPanel.add(player[i]);
 	    	}
@@ -137,14 +146,13 @@ public class BattleshipView extends JFrame{
 		
 		
 	}
-	  public static void main(String[] args)
-	  {
-	      BattleshipController bsc = new BattleshipController();
-		  BattleshipView bsview = new BattleshipView();
-		  BattleshipData bsdata = new BattleshipData();
-		  bsc.setBattleshipData(bsdata);
-		  bsc.setBattleshipView(bsview);
-	    
-	    
-	  }
+//	  public static void main(String[] args)
+//	  {
+//	      BattleshipController bsc = new BattleshipController();
+//		  BattleshipView bsview = new BattleshipView();
+//		  BattleshipData bsdata = new BattleshipData();
+//		  bsc.setBattleshipData(bsdata);
+//		  bsc.setBattleshipView(bsview);
+//	    
+//	  }
 }
