@@ -20,13 +20,13 @@ public class BattleshipGame {
 		playerTwo = 0;
 	}
 	
-	public void addPlayer(int clientID) {
+	public void addPlayer(long l) {
 		if (playerOne != 0) {
-			playerOne = clientID;
+			playerOne = l;
 			System.out.println(playerOne + " Connected");
 		}
 		else if (playerTwo != 0) {
-			playerTwo = clientID;
+			playerTwo = l;
 			System.out.println(playerTwo + " Connected");
 			pg = new playGame();
 			//start game when two players are in
@@ -38,13 +38,13 @@ public class BattleshipGame {
 	
 	public battleshipComm handleCommunication(battleshipComm arg0, long l) {
 		
-		pg = games.get(arg0.gameIndex);
-		if (pg.placeShips) {
-			pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex());
-		}
-		else {
-			pg.turn(arg0.getp1Turn(), arg0.getboardIndex());
-		}
+		//pg = games.get(arg0.gameIndex);
+		//if (pg.placeShips) {
+		//	pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex());
+		//}
+		//else {
+		//	pg.turn(arg0.getp1Turn(), arg0.getboardIndex());
+		//}
 		
 		//update bsc
 		//bsc.setp1Turn(pg.);

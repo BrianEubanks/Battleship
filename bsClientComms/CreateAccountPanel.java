@@ -46,6 +46,7 @@ public class CreateAccountPanel extends JFrame {
 		caControl.setCAP(this);
 		caControl.setUN(usern);
 		caControl.setPW(passw);
+		caControl.setClient(client);
 		
 		
     
@@ -99,6 +100,7 @@ public class CreateAccountPanel extends JFrame {
 	    	  {
 	    		  System.out.println("Submit Button Pressed");
 	    		  caControl.loginSubmit();
+	    		  caControl.loginCancel();
 	    	  }
 	      }
 	      else if(e.getSource() == cancel) {

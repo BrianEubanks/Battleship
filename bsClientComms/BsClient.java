@@ -15,6 +15,8 @@ public class BsClient extends AbstractClient {
 
 	private boolean loggedIn;
 	
+	private InitialPanel startWindow;
+	
 	private BattleshipController bsc;
 	private BattleshipView bsview;
 	private BattleshipData bsdata;
@@ -25,28 +27,44 @@ public class BsClient extends AbstractClient {
 	}
 	public void handleMessageFromServer(Object msg) {
 		System.out.println("Message Class: " + msg.getClass());
+		System.out.println("Are we connected? "+ this.isConnected());
 		if (msg instanceof battleshipServer.battleshipComm){
 			System.out.println("Server BattleshipComm received");
 			System.out.println(this.isConnected());
 			bsc.receiveDataFromServer((battleshipServer.battleshipComm) msg);
 			System.out.println(this.isConnected());
 		}
+		else if(msg instanceof LoginData) {
+			System.out.println("LoginData received  "+msg);	
+			System.out.println(msg.getClass());
+			System.out.println(this.isConnected());
+			System.out.println("other message: "+this.isConnected());
+			startWindow.setClient(this);
+		}
+		else if(msg instanceof CreateAccountData) {
+			System.out.println("CreateAccountData received  "+msg);	
+			System.out.println(msg.getClass());
+			System.out.println(this.isConnected());
+			System.out.println("other message: "+this.isConnected());
+			startWindow.setClient(this);
+		}
 		else{
 			System.out.println("Server Message received  "+msg);	
-		
+			System.out.println(msg.getClass());
+			System.out.println(this.isConnected());
 			String message = (String)msg;
 			if (message.startsWith("username")){
 				message = message.substring(9);
 				clientID.setText(message);
 				if (!loggedIn) {
-					new InitialPanel("Battleship Client", this);
-					loggedIn = true;
+					System.out.println("New Panel"+this.isConnected());
+					startWindow = new InitialPanel("Battleship Client", this);
+					//loggedIn = true;
 				}
 				
 			}
-			
 		}
-		System.out.println("Are we connected? "+ this.isConnected());
+		
 		//else {
 		//	serverMsg.append("Server: " + (String) msg+"\n");
 		//}

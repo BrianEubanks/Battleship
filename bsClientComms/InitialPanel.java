@@ -13,6 +13,8 @@ public class InitialPanel extends JFrame{
 	private JButton create;
 	private InitialControl iControl;
 	
+	private BsClient c;
+	
 	public InitialPanel(String title, BsClient client){
 	    
 	    
@@ -21,6 +23,7 @@ public class InitialPanel extends JFrame{
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
 	    iControl=new InitialControl();
+	    c=client;
 	    iControl.setClient(client);
 	    
 	    //ADD YOUR CODE HERE TO CREATE THE STATUS JLABEL AND THE JBUTTONS
@@ -54,6 +57,13 @@ public class InitialPanel extends JFrame{
 	    
 	  
 	  }
+	
+		public void setClient(BsClient c) {
+			this.c=c;
+			iControl.setClient(c);
+			System.out.println("SetClient"+c.isConnected());
+		}
+	
 	  private class EventHandler implements ActionListener{
 		  
 		  public void actionPerformed(ActionEvent e) {

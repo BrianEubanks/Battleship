@@ -1,5 +1,7 @@
 package bsClientComms;
 
+import java.io.IOException;
+
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -9,6 +11,7 @@ public class CreateAccountControl {
 	private JTextField passw;
 	private JTextField passwconf;
 	private CreateAccountData capData;
+	private BsClient client;
 	
 	public CreateAccountControl(JTextField usern,JTextField passw,JTextField passwconf) {
 		capData = new CreateAccountData();
@@ -23,6 +26,13 @@ public class CreateAccountControl {
 		capData.setUsername(usern.getText());
 		capData.setPassword(passw.getText());
 		capData.setPasswordConf(passwconf.getText());
+		
+		try {
+			client.sendToServer(capData);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}
@@ -45,5 +55,8 @@ public class CreateAccountControl {
 	public void setPWC(JTextField passwconf) {
 		this.passwconf = passwconf;
 		
+	}
+	public void setClient(BsClient client) {
+		this.client = client;
 	}
 }

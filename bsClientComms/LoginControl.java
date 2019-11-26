@@ -23,6 +23,7 @@ public class LoginControl {
 	
 	public void loginSubmit() {
 		larrydavid = new LoginData(usern.getText(),passw.getText());
+		System.out.println(client.isConnected());
 		//if(cs.validateAccount(larrydavid))
 		//{
 		//	System.out.println("Error duplicate Username");
@@ -33,6 +34,7 @@ public class LoginControl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 	}
 	

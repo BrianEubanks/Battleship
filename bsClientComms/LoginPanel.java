@@ -19,6 +19,7 @@ public class LoginPanel extends JFrame{
 	private JTextField passw;
 	private JButton submit;
 	private JButton cancel;
+	private BsClient client;
 	
 	
 	public LoginPanel(String title,BsClient client) {
@@ -31,6 +32,7 @@ public class LoginPanel extends JFrame{
 		lControl.setLP(this);
 		lControl.setUN(usern);
 		lControl.setPW(passw);
+		this.client = client;
 		lControl.setClient(client);
 		
     
@@ -79,6 +81,7 @@ public class LoginPanel extends JFrame{
 	      if (e.getSource() == submit) {
 	        System.out.println("Login Button Pressed");
 	        lControl.loginSubmit();
+	        lControl.loginCancel();
 	      }
 	      else if(e.getSource() == cancel) {
 	    	System.out.println("Create Button Pressed");

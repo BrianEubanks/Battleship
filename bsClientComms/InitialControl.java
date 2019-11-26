@@ -14,10 +14,12 @@ public class InitialControl {
 	public InitialControl() {}
 	
 	public void accountLogin() {
+		System.out.println("accountLogin: "+client.isConnected());
 		new LoginPanel("Battleship Client",client);
 	}
 	
 	public void accountCreate() {
+		System.out.println("createAccount: "+client.isConnected());
 		new CreateAccountPanel("Battleship Client",client);
 	}
 	public void setInitialPanel(InitialPanel ip) {

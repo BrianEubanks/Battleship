@@ -21,6 +21,7 @@ public class BsServer extends AbstractServer {
 	private Database userdb;
 	
 	private BattleshipGame bg;
+	private battleshipComm returnData;
 
 	
 	public BsServer() throws IOException {
@@ -34,9 +35,19 @@ public class BsServer extends AbstractServer {
 		System.out.println("Message from Client Received! "+arg1.getId());
 		System.out.println("Data type: "+arg0.getClass());
 		if(arg0 instanceof LoginData) {
-			
+			System.out.println("Before add player");
+			bg.addPlayer(arg1.getId());
+			System.out.println("After add player");
+			try {
+				log.append("Client " + arg1.getId() + " " + arg0);
+				arg1.sendToClient(arg0);
+				System.out.println("How about now?");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		if(arg0 instanceof CreateAccountData) {
+		else if(arg0 instanceof CreateAccountData) {
 			if(validateCreateAccount((CreateAccountData)arg0)) {
 				try {
 					userdb.addUser(new User((int)arg1.getId(),((CreateAccountData) arg0).getUsername(), ((CreateAccountData)arg0).getPassword()));
@@ -58,7 +69,7 @@ public class BsServer extends AbstractServer {
 		else if (arg0 instanceof battleshipComm) {
 			System.out.println("battleshipComm");
 			//handle game
-			//battleshipComm bdata = bg.handleCommunication((battleshipComm)arg0, arg1.getId());
+			returnData = bg.handleCommunication((battleshipComm)arg0, arg1.getId());
 			
 			try {
 				arg1.sendToClient(new battleshipComm(0));
@@ -70,9 +81,11 @@ public class BsServer extends AbstractServer {
 			}
 		}
 		else{
+			System.out.println("Other data: "+arg0.getClass());
 			try {
 				log.append("Client " + arg1.getId() + " " + arg0);
 				arg1.sendToClient(arg0);
+				System.out.println("How about now?");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
