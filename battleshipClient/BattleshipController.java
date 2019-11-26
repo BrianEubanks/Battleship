@@ -83,6 +83,7 @@ public class BattleshipController implements ActionListener{
 	    }
 		
 		try {
+			
 			bsdata.sendToServer();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -46,6 +46,9 @@ public class BattleshipData {
 	public void sendToServer() throws IOException {
 		System.out.println(message);
 		System.out.println("Send To Server "+boardIndex+" "+boardDataValue);
+		System.out.println(bsclient.isConnected());
+		bsclient.openConnection( );
+		System.out.println(bsclient.isConnected());
 		bsc = new battleshipComm(boardIndex);
 		bsclient.sendToServer(bsc);
 	}

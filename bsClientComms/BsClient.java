@@ -12,6 +12,8 @@ public class BsClient extends AbstractClient {
 	private JLabel status;
 	private JTextArea serverMsg;
 	private JTextField clientID;
+
+	private boolean loggedIn;
 	
 	private BattleshipController bsc;
 	private BattleshipView bsview;
@@ -19,6 +21,7 @@ public class BsClient extends AbstractClient {
 	
 	public BsClient() {
 		super("localhost",8300);
+		loggedIn = false;
 	}
 	public void handleMessageFromServer(Object msg) {
 		if (msg instanceof battleshipComm){
@@ -33,7 +36,10 @@ public class BsClient extends AbstractClient {
 			if (message.startsWith("username")){
 				message = message.substring(9);
 				clientID.setText(message);
-				new InitialPanel("Battleship Client", this);
+				if (!loggedIn) {
+					new InitialPanel("Battleship Client", this);
+					loggedIn = true;
+				}
 			}
 		}
 		//else {
@@ -51,7 +57,12 @@ public class BsClient extends AbstractClient {
 		//System.out.println("Client Connected");
 		status.setText("Connected");
 		status.setForeground(Color.GREEN);
-		//validate user first
+		
+		
+		if (!loggedIn) {
+			//validate user first
+			//loggedIn = true;
+			//this is adjusted after logged in above in handlemessagefrom server
 		//start game
 	      bsc = new BattleshipController();
 		  bsview = new BattleshipView();
@@ -59,7 +70,7 @@ public class BsClient extends AbstractClient {
 		  bsdata.setClient(this);
 		  bsc.setBattleshipData(bsdata);
 		  bsc.setBattleshipView(bsview);
-		
+		}
 	}
 	
 	public void setStatus(JLabel status) {
