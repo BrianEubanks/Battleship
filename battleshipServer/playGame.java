@@ -3,6 +3,8 @@ package battleshipServer;
 public class playGame {
 
 	
+	private battleshipComm bsc;
+	
 	/* Board Data is used to store the contents of each player's 
 			board. Each number element of the array corresponds to the
 			tile on the board. 
@@ -91,6 +93,8 @@ public class playGame {
 		placeShips = placeShipsp1 || placeShipsp2;
 		
 		//when place ships is false, the game starts.
+		
+		placeShips=false;
 		
 		//Set player1 turn to true. Use this to alternate turns in gameplay
 		p1Turn = true;
@@ -220,6 +224,7 @@ public class playGame {
 			}
 		}
 		
+		
 	}
 	
 	
@@ -238,18 +243,22 @@ public class playGame {
 	}
 	
 	public void turn(boolean player1, int boardIndex) {
-		
+		System.out.println("Start Turn");
+		System.out.println(player1 + "  " + boardIndex);
 		// This first if should not ever be true
 		// We Check for placeships in BattleshipGame before calling turn() or placeShips();
 		//
 		if (placeShips) {
+			
 			messageToPlayer = new String("Waiting on placing Ships?");
+			System.out.println(messageToPlayer);
 		}
 		
 		else if (player1 != p1Turn) {
 			// its not your turn!!
 			// send back to client
 			messageToPlayer = new String("It's Not Your Turn!!!");
+			System.out.println(messageToPlayer);
 		}
 		//player2s turn
 		//player 2 is attacking player 1s board
@@ -289,8 +298,10 @@ public class playGame {
 			default:
 				//data error
 				messageToPlayer = new String("Board Data Error, something went wrong");
+				System.out.println(messageToPlayer);
 				break;
 			}
+			
 		}
 		//player1s turn
 		//player 1 is attacking player2s board
@@ -331,9 +342,19 @@ public class playGame {
 			default:
 				//data error
 				messageToPlayer = new String("Board Data Error, something went wrong");
+				System.out.println(messageToPlayer);
 				break;
 			}
 		}
+		bsc = new battleshipComm(boardIndex);
+		bsc.setDataValue(p2boardData[boardIndex]);
+		bsc.setMessage(messageToPlayer);
+		bsc.setp1Turn(!p1Turn);
+		System.out.println(messageToPlayer);
+	}
+	
+	public battleshipComm getComms() {
+		return bsc;
 	}
 	
 	

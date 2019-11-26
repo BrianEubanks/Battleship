@@ -18,6 +18,7 @@ public class BattleshipGame {
 	public BattleshipGame() {
 		playerOne = 0;
 		playerTwo = 0;
+		//pg = new playGame();
 	}
 	
 	public void addPlayer(long l) {
@@ -38,6 +39,7 @@ public class BattleshipGame {
 	
 	public battleshipComm handleCommunication(battleshipComm arg0, long l) {
 		
+		System.out.println("start handle Comms");
 		//pg = games.get(arg0.gameIndex);
 		//if (pg.placeShips) {
 		//	pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex());
@@ -47,16 +49,14 @@ public class BattleshipGame {
 		//}
 		
 		//update bsc
-		//bsc.setp1Turn(pg.);
-		//bsc.setBoarIndex(indexValue);
-		//bsc.setDataValue(dataValue);
-		//bsc.setGameOver(gameOver);
-		//bsc.setMessage(message);
-		//bsc.setplaceShips(placeShips);
-
+		pg = new playGame();
+		System.out.println(pg);
+		System.out.println(pg.getClass());
+		pg.turn(arg0.getp1Turn(), arg0.getboardIndex());
+		
 		//send to server new bsc with updated values
 		System.out.println("Send battleshipcomm to client: "+ arg0.getClass());
-		return arg0;
+		return pg.getComms();
 	}
 	
 }

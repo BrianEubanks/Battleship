@@ -72,7 +72,8 @@ public class BsServer extends AbstractServer {
 			returnData = bg.handleCommunication((battleshipComm)arg0, arg1.getId());
 			
 			try {
-				arg1.sendToClient(new battleshipComm(0));
+				arg1.sendToClient(returnData);
+				System.out.println(returnData.getClass());
 				System.out.println("How about now?");
 				//System.out.println(bdata.getClass());
 			} catch (IOException e) {
