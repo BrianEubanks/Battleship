@@ -15,12 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import bsServerComms.Database;
+
 
 
 public class CreateAccountPanel extends JFrame {
 	
-	private Database db;
+	//private Database db;
 	private CreateAccountControl caControl;
 	private JLabel prompt;
 	private JLabel uname;

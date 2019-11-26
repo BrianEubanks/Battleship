@@ -4,10 +4,12 @@ import ocsf.server.AbstractServer;
 import bsClientComms.LoginData;
 import bsClientComms.CreateAccountData;
 import bsClientComms.User;
+import bsDatabase.BSDatabaseServer;
 import battleshipServer.*;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.sql.*;
 import java.sql.SQLException;
 
 import javax.swing.*;
@@ -18,7 +20,7 @@ public class BsServer extends AbstractServer {
 	
 	private JTextArea log; //Corresponds to JTextArea of ServerGUI
 	private JLabel status; //Corresponds to the JLabel of ServerGUI
-	private Database userdb;
+	private BSDatabaseServer userdb;
 	
 	private BattleshipGame bg;
 	private battleshipComm returnData;
@@ -27,14 +29,30 @@ public class BsServer extends AbstractServer {
 	public BsServer() throws IOException {
 		super(12345);
 		setTimeout(500);
-		userdb = new Database();
+		//userdb = new BSDatabaseServer();
 		bg = new BattleshipGame();
+		
 		
 	}
 	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1) {
 		System.out.println("Message from Client Received! "+arg1.getId());
 		System.out.println("Data type: "+arg0.getClass());
-		if(arg0 instanceof LoginData) {
+		if(arg0 instanceof LoginData) 
+		{
+			System.out.println("Before validate player");
+			//validate user
+			try {
+				userdb = new BSDatabaseServer("select * from user","Q");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			//userdb.query("select * from user");
+//			if(userdb.validateUser(((LoginData) arg0).getUsername(),((LoginData) arg0).getPassword())) {
+//				System.out.println("Validate Player: "+((LoginData) arg0).getUsername());
+//				System.out.println(userdb.validateUser(((LoginData) arg0).getUsername(),((LoginData) arg0).getPassword()));
+//			}
+			//Before add player, they  must login 
 			System.out.println("Before add player");
 			bg.addPlayer(arg1.getId());
 			System.out.println("After add player");
@@ -49,12 +67,8 @@ public class BsServer extends AbstractServer {
 		}
 		else if(arg0 instanceof CreateAccountData) {
 			if(validateCreateAccount((CreateAccountData)arg0)) {
-				try {
-					userdb.addUser(new User((int)arg1.getId(),((CreateAccountData) arg0).getUsername(), ((CreateAccountData)arg0).getPassword()));
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					//userdb.addUser(new User((int)arg1.getId(),((CreateAccountData) arg0).getUsername(), ((CreateAccountData)arg0).getPassword()));
+
 			}
 			else {
 				log.append("Client " + arg1.getId() + ": Create Account Error");
@@ -145,7 +159,8 @@ public class BsServer extends AbstractServer {
 	}
 	public boolean validateAccount(LoginData ld) {
 		String usern = ld.getUsername();
-		if(userdb.verifyUsername(usern))
+		//if(userdb.verifyUsername(usern))
+		if(true)
 			return true;
 		else
 			return false;
