@@ -19,16 +19,20 @@ public class BsServer extends AbstractServer {
 	private JTextArea log; //Corresponds to JTextArea of ServerGUI
 	private JLabel status; //Corresponds to the JLabel of ServerGUI
 	private Database userdb;
+	
+	private BattleshipGame bg;
 
 	
 	public BsServer() throws IOException {
 		super(12345);
 		setTimeout(500);
 		userdb = new Database();
+		bg = new BattleshipGame();
 		
 	}
 	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1) {
-		System.out.println("Message from Client Received!");
+		System.out.println("Message from Client Received! "+arg1.getId());
+		System.out.println("Data type: "+arg0.getClass());
 		if(arg0 instanceof LoginData) {
 			
 		}
@@ -54,14 +58,25 @@ public class BsServer extends AbstractServer {
 		else if (arg0 instanceof battleshipComm) {
 			System.out.println("battleshipComm");
 			//handle game
+			//battleshipComm bdata = bg.handleCommunication((battleshipComm)arg0, arg1.getId());
 			
+			try {
+				arg1.sendToClient(new battleshipComm(0));
+				System.out.println("How about now?");
+				//System.out.println(bdata.getClass());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		try {
-			log.append("Client " + arg1.getId() + " " + arg0);
-			arg1.sendToClient(arg0);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else{
+			try {
+				log.append("Client " + arg1.getId() + " " + arg0);
+				arg1.sendToClient(arg0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	public void clientConnected(ConnectionToClient client) {
@@ -70,6 +85,7 @@ public class BsServer extends AbstractServer {
 		log.append("Client "+connected+" Connected\n");
 		try {
 			client.sendToClient(connected);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

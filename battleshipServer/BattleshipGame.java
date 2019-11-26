@@ -12,23 +12,38 @@ public class BattleshipGame {
 	private playGame pg;
 	
 	
-	private int playerOne; //client id?
-	private int playerTwo;
+	private long playerOne; //client id?
+	private long playerTwo;
 	
 	public BattleshipGame() {
-		games = new ArrayList();
-		games.add(new playGame());
+		playerOne = 0;
+		playerTwo = 0;
 	}
 	
-	
-	public void handleCommunication(battleshipComm bsc, int clientID) {
-		
-		pg = games.get(bsc.gameIndex);
-		if (pg.placeShips) {
-			pg.placeShips(bsc.getp1Turn(), bsc.getboardIndex());
+	public void addPlayer(int clientID) {
+		if (playerOne != 0) {
+			playerOne = clientID;
+			System.out.println(playerOne + " Connected");
+		}
+		else if (playerTwo != 0) {
+			playerTwo = clientID;
+			System.out.println(playerTwo + " Connected");
+			pg = new playGame();
+			//start game when two players are in
 		}
 		else {
-			pg.turn(bsc.getp1Turn(), bsc.getboardIndex());
+			//game full
+		}
+	}
+	
+	public battleshipComm handleCommunication(battleshipComm arg0, long l) {
+		
+		pg = games.get(arg0.gameIndex);
+		if (pg.placeShips) {
+			pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex());
+		}
+		else {
+			pg.turn(arg0.getp1Turn(), arg0.getboardIndex());
 		}
 		
 		//update bsc
@@ -40,7 +55,8 @@ public class BattleshipGame {
 		//bsc.setplaceShips(placeShips);
 
 		//send to server new bsc with updated values
-		
+		System.out.println("Send battleshipcomm to client: "+ arg0.getClass());
+		return arg0;
 	}
 	
 }

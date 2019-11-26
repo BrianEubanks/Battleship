@@ -43,14 +43,20 @@ public class BattleshipData {
 		this.bsclient=bsclient;
 	}
 	
-	public void sendToServer() throws IOException {
+	public void sendToServer()  {
 		System.out.println(message);
 		System.out.println("Send To Server "+boardIndex+" "+boardDataValue);
 		System.out.println(bsclient.isConnected());
-		bsclient.openConnection( );
+		//bsclient.openConnection( );
 		System.out.println(bsclient.isConnected());
 		bsc = new battleshipComm(boardIndex);
-		bsclient.sendToServer(bsc);
+		bsc.setMessage(message);
+		try {
+			bsclient.sendToServer(bsc);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

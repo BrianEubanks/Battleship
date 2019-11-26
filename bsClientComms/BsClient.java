@@ -24,10 +24,12 @@ public class BsClient extends AbstractClient {
 		loggedIn = false;
 	}
 	public void handleMessageFromServer(Object msg) {
-		if (msg instanceof battleshipComm){
+		System.out.println("Message Class: " + msg.getClass());
+		if (msg instanceof battleshipServer.battleshipComm){
 			System.out.println("Server BattleshipComm received");
+			System.out.println(this.isConnected());
 			bsc.receiveDataFromServer((battleshipServer.battleshipComm) msg);
-			
+			System.out.println(this.isConnected());
 		}
 		else{
 			System.out.println("Server Message received  "+msg);	
@@ -40,8 +42,11 @@ public class BsClient extends AbstractClient {
 					new InitialPanel("Battleship Client", this);
 					loggedIn = true;
 				}
+				
 			}
+			
 		}
+		System.out.println("Are we connected? "+ this.isConnected());
 		//else {
 		//	serverMsg.append("Server: " + (String) msg+"\n");
 		//}
