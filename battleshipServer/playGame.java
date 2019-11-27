@@ -51,6 +51,7 @@ public class playGame {
 	private boolean placeShipsp1;
 	private boolean placeShipsp2;
 	private boolean p1Turn;
+	private boolean validMove;
 	
 	//Message to Client
 	// Used to display the result of the turn to the player
@@ -94,10 +95,11 @@ public class playGame {
 		
 		//when place ships is false, the game starts.
 		
-		placeShips=false;
+		placeShips=true;
 		
 		//Set player1 turn to true. Use this to alternate turns in gameplay
 		p1Turn = true;
+		validMove=false;
 
 	}
 	
@@ -130,21 +132,77 @@ public class playGame {
 		}
 		
 		p1shipCount++;
+		if(p1shipCount>3) {
+			placeShipsp1 = false;
+			System.out.println("PLAYER 1 SHIPS DONE");
+		}
+		if((!placeShipsp1) && (!placeShipsp2)) {
+			placeShips = false;
+			p1Turn = true;
+			//validMove=false;
+		}
+		
+		System.out.println("P1ShipData & Count: "+p1shipData[p1shipCount]+" "+p1shipCount);
+		System.out.println(p1boardData[boardIndex]);
 		return true;
 	}
 	
 	public boolean addShipToP2Board(int boardIndex) {
+		int index = 0;
+		int checkIndex = 0;
+		int shipDataPoints = p2shipData[p2shipCount];
 		
+		//check for wrapping at end of line
+		if((boardIndex%10)+shipDataPoints>9) {
+			return false;
+		}
+		
+		//check for overlap before adding ship
+		while (checkIndex < shipDataPoints) {
+			if(p2boardData[boardIndex+checkIndex]!=6){
+				//if any data point is not water, there is an overlap with another ship
+				return false;
+			}
+			checkIndex++;
+		}
+		// add the ship to the boardData
+		while (index < shipDataPoints) {
+			p2boardData[boardIndex+index]=shipDataPoints;
+			index++;
+		}
+		
+		p2shipCount++;
+		if(p2shipCount>3) {
+			placeShipsp2 = false;
+			System.out.println("PLAYER 2 SHIPS DONE");
+		}
+		if((!placeShipsp1) && (!placeShipsp2))  {
+			placeShips = false;
+			p1Turn = true;
+			//validMove=false;
+		}
 		
 		return true;
 	}
 	
-	public void placeShips(boolean player1, int boardIndex) {
+	public void placeShips(boolean player1, int boardIndex, boolean boardClick) {
+		System.out.println("Player1 placeShips: "+ p1Turn+" --------------------------");
+		System.out.println("Data Comms Received:");
+		System.out.println("player1: "+player1);
+		System.out.println("boardIndex: "+boardIndex);
+		System.out.println("p1boardClick "+ boardClick);
 		//assign ship to boarddata
 		//initialize shipdata to length
-		
+		if (player1 != boardClick) {
+			// its not your turn!!
+			// send back to client
+			messageToPlayer = new String("Place Ships on your own board!!! Player1: "+player1);
+			validMove=false;
+			
+			System.out.println(messageToPlayer);
+		}
 		//place player 1's ships
-		if(player1) {
+		else if(player1) {
 			switch(p1boardData[boardIndex]) {
 			case 0:
 			case 1:
@@ -155,6 +213,7 @@ public class playGame {
 				//change to shiphit
 				//decrement ship no
 				messageToPlayer = new String("There is already a ship here!");
+				validMove=false;
 				//p1shipData[p1boardData[boardIndex]]--;
 				//p1boardData[boardIndex]=5;
 				//p1Turn = false;
@@ -163,29 +222,33 @@ public class playGame {
 				//already hit here
 				//does not change turn
 				messageToPlayer = new String("Board Data Error: 5");
+				validMove=false;
 				break;
 			case 6:
 				//water
 				//Place a ship here********************************************
 				messageToPlayer = new String("AddShipToP1Board");
 				//p1boardData[boardIndex]=7;
-				p1Turn = addShipToP1Board(boardIndex);
+				validMove = addShipToP1Board(boardIndex);
+				System.out.println(messageToPlayer+" "+validMove);
 				break;
 			case 7:
 				//watermiss
 				//already missed here
 				//does not change turn
 				messageToPlayer = new String("Board Data Error: 7");
+				validMove=false;
 				break;
 			default:
 				//data error
 				messageToPlayer = new String("Board Data Error, something went wrong");
+				validMove=false;
 				break;
 			}
 		}
 		//place player 2's ships
 		else if(!player1) {
-			switch(p1boardData[boardIndex]) {
+			switch(p2boardData[boardIndex]) {
 			case 0:
 			case 1:
 			case 2:
@@ -197,32 +260,53 @@ public class playGame {
 				messageToPlayer = new String("There is already a ship here!");
 				//p1shipData[p1boardData[boardIndex]]--;
 				//p1boardData[boardIndex]=5;
-				//p1Turn = false;
+				validMove=false;
 				break;
 			case 5:
 				//already hit here
 				//does not change turn
 				messageToPlayer = new String("Board Data Error: 5");
+				validMove=false;
 				break;
 			case 6:
 				//water
 				//Place a ship here********************************************
 				messageToPlayer = new String("AddShiptoP2Board");
 				//p1boardData[boardIndex]=7;
-				p1Turn = addShipToP2Board(boardIndex);
+				validMove = addShipToP2Board(boardIndex);
+				System.out.println(messageToPlayer+" "+validMove);
 				break;
 			case 7:
 				//watermiss
 				//already missed here
 				//does not change turn
 				messageToPlayer = new String("Board Data Error: 7");
+				validMove=false;
 				break;
 			default:
 				//data error
 				messageToPlayer = new String("Board Data Error, something went wrong");
+				validMove=false;
 				break;
 			}
 		}
+		bsc = new battleshipComm(boardIndex);
+		if(player1) {
+			bsc.setDataValue(p1boardData[boardIndex]);
+		}
+		else {
+			bsc.setDataValue(p2boardData[boardIndex]);
+		}
+		bsc.setMessage(messageToPlayer);
+		bsc.setp1Turn(p1Turn);
+		bsc.setValidMove(validMove);
+		bsc.setp1BoardClick(boardClick);
+		System.out.println(validMove+" " + messageToPlayer+" "+bsc.getDataValue()+" "+ boardIndex);
+		System.out.println("P1 Ship Data: "+p1shipData[p1shipCount]+" "+p1shipCount);
+		System.out.println("P2 Ship Data: "+p2shipData[p2shipCount]+" "+p2shipCount);
+		System.out.println("P1placeships: "+placeShipsp1);
+		System.out.println("P2placeships: "+placeShipsp2);
+		System.out.println("Placeships: "+placeShips);
 		
 		
 	}
@@ -243,8 +327,11 @@ public class playGame {
 	}
 	
 	public void turn(boolean player1, int boardIndex, boolean boardClick) {
-		System.out.println("Start Turn "+ p1Turn);
-		System.out.println(player1 + "  " + boardIndex + " "+ boardClick);
+		System.out.println("Player1 Turn: "+ p1Turn+" --------------------------");
+		System.out.println("Data Comms Received:");
+		System.out.println("player1: "+player1);
+		System.out.println("boardIndex: "+boardIndex);
+		System.out.println("p1boardClick "+ boardClick);
 		// This first if should not ever be true
 		// We Check for placeships in BattleshipGame before calling turn() or placeShips();
 		//
@@ -258,12 +345,14 @@ public class playGame {
 			// its not your turn!!
 			// send back to client
 			messageToPlayer = new String("It's Not Your Turn!!! Player1: "+player1);
+			validMove=false;
 			System.out.println(messageToPlayer);
 		}
 		else if (player1 == boardClick) {
 			// its not your turn!!
 			// send back to client
-			messageToPlayer = new String("Don't Shoot your own ships!!!");
+			messageToPlayer = new String("Don't Shoot your own ships!!! Player1: "+player1);
+			validMove=false;
 			System.out.println(messageToPlayer);
 		}
 		//player2s turn
@@ -278,40 +367,45 @@ public class playGame {
 				//ship
 				//change to shiphit
 				//decrement ship no
-				messageToPlayer = new String("HIT!!!");
+				messageToPlayer = new String("HIT!!! Player1: "+player1);
 				p1shipData[p1boardData[boardIndex]]--;
 				p1boardData[boardIndex]=5;
 				p1Turn = true;
+				validMove=true;
 				break;
 			case 5:
 				//already hit here
 				//does not change turn
-				messageToPlayer = new String("You've Already Shot Here");
+				messageToPlayer = new String("You've Already Shot Here. Player1: "+player1);
+				validMove=false;
 				break;
 			case 6:
 				//water
 				//change to miss
-				messageToPlayer = new String("MISS!!!");
+				messageToPlayer = new String("MISS!!! Player1: "+player1);
 				p1boardData[boardIndex]=7;
 				p1Turn = true;
+				validMove=true;
 				break;
 			case 7:
 				//watermiss
 				//already missed here
 				//does not change turn
-				messageToPlayer = new String("You've Already Missed Here");
+				messageToPlayer = new String("You've Already Missed Here. Player1: "+player1);
+				validMove=false;
 				break;
 			default:
 				//data error
 				messageToPlayer = new String("Board Data Error, something went wrong");
 				System.out.println(messageToPlayer);
+				validMove=false;
 				break;
 			}
 			
 		}
 		//player1s turn
 		//player 1 is attacking player2s board
-		else{
+		else if (player1){
 			switch(p2boardData[boardIndex]) {
 			case 0:
 			case 1:
@@ -321,41 +415,52 @@ public class playGame {
 				//ship
 				//change to shiphit
 				//decrement ship no
-				messageToPlayer = new String("HIT!!!");
+				messageToPlayer = new String("HIT!!! Player1: "+player1);
 				p2shipData[p2boardData[boardIndex]]--;
 				p2boardData[boardIndex]=5;
 				checkShips(p1Turn);
 				p1Turn=false;
+				validMove=true;
 				break;
 			case 5:
 				//already hit here
 				//does not change turn
-				messageToPlayer = new String("You've Already Shot Here");
+				messageToPlayer = new String("You've Already Shot Here. Player1: "+player1);
+				validMove=false;
 				break;
 			case 6:
 				//water
 				//change to miss
-				messageToPlayer = new String("MISS!!!");
+				messageToPlayer = new String("MISS!!! Player1: "+player1);
 				p2boardData[boardIndex]=7;
 				p1Turn=false;
+				validMove=true;
 				break;
 			case 7:
 				//watermiss
 				//already missed here
 				//does not change turn
-				messageToPlayer = new String("You've Already Missed Here");
+				messageToPlayer = new String("You've Already Missed Here. Player1: "+player1);
+				validMove=false;
 				break;
 			default:
 				//data error
 				messageToPlayer = new String("Board Data Error, something went wrong");
 				System.out.println(messageToPlayer);
+				validMove=false;
 				break;
 			}
 		}
 		bsc = new battleshipComm(boardIndex);
-		bsc.setDataValue(p2boardData[boardIndex]);
+		if(player1) {
+			bsc.setDataValue(p2boardData[boardIndex]);
+		}
+		else {
+			bsc.setDataValue(p1boardData[boardIndex]);
+		}
 		bsc.setMessage(messageToPlayer);
 		bsc.setp1Turn(p1Turn);
+		bsc.setValidMove(validMove);
 		bsc.setp1BoardClick(boardClick);
 		System.out.println(messageToPlayer);
 	}

@@ -14,16 +14,21 @@ import java.awt.event.ActionEvent;
 
 public class BattleshipView extends JFrame{
 	
+	
+	private boolean p1;
+	
 	private JButton[] opponent = new JButton[100];
 	private JButton[] player = new JButton [100];
 	private int[] opponentData = new int[100];
 	private int[] playerData = new int [100];
 	
 	private ImageIcon icon1 = new ImageIcon("water.ico");
+	private ImageIcon icon1a = new ImageIcon("waterinv.ico");
 	private ImageIcon icon2 = new ImageIcon("bship.ico");
 	private ImageIcon icon3 = new ImageIcon("watermiss.ico");
 	private ImageIcon icon4 = new ImageIcon("bshiphit.ico");
 	private ImageIcon water;
+	private ImageIcon waterinv;
 	private ImageIcon bship;
 	private ImageIcon watermiss;
 	private ImageIcon bshiphit;
@@ -59,7 +64,7 @@ public class BattleshipView extends JFrame{
 	}
 	
 	
-	public BattleshipView() {
+	public BattleshipView(boolean p) {
 		
 		int i = 0;
 	    
@@ -68,10 +73,16 @@ public class BattleshipView extends JFrame{
 	    this.setResizable(false);
 	    this.setTitle("Battleship");
 	    
+	    p1=p;
+	    
 	    
 	    Image img = icon1.getImage();
 	    Image newimg = img.getScaledInstance(this.getSize().height/12, this.getSize().width/12,  java.awt.Image.SCALE_SMOOTH);
 	    water = new ImageIcon(newimg);
+	    
+	    Image img1 = icon1a.getImage();
+	    Image newimg1 = img1.getScaledInstance(this.getSize().height/12, this.getSize().width/12,  java.awt.Image.SCALE_SMOOTH);
+	    waterinv = new ImageIcon(newimg1);
 
 	    Image img2 = icon2.getImage();
 	    Image newimg2 = img2.getScaledInstance(this.getSize().height/12, this.getSize().width/12,  java.awt.Image.SCALE_SMOOTH);
@@ -120,30 +131,59 @@ public class BattleshipView extends JFrame{
 		
 		// Add Buttons to board Panel
 	    //Create Buttons and add to the grid
-	    for (i = 0; i < opponent.length; i++)
-	    {
-	       opponentData[i]=(i%2)+2;
-	    	if(opponentData[i]==7) {
-	    		opponent[i]=new JButton(watermiss);
-		    	boardPanel.add(opponent[i]);
-	    	}
-	    	else {
-	    		opponent[i]=new JButton(bshiphit);
-	    		boardPanel.add(opponent[i]);
-	    	}
-	    }
-	    for (i = 0; i < player.length; i++)
-	    {
-	    	playerData[i]=i%2;
-	    	if(playerData[i]==6) {
-	    		player[i]=new JButton(water);
-		    	boardPanel.add(player[i]);
-	    	}
-	    	else {
-	    		player[i]=new JButton(bship);
-	    		boardPanel.add(player[i]);
-	    	}
-	    }
+		//Opponent will be negative water
+		if(p1) {
+		    for (i = 0; i < opponent.length; i++)
+		    {
+		       opponentData[i]=(i%2)+2;
+		    	if(opponentData[i]==7) {
+		    		opponent[i]=new JButton(watermiss);
+			    	boardPanel.add(opponent[i]);
+		    	}
+		    	else {
+		    		opponent[i]=new JButton(waterinv);
+		    		boardPanel.add(opponent[i]);
+		    	}
+		    }
+		    for (i = 0; i < player.length; i++)
+		    {
+		    	playerData[i]=6;
+		    	if(playerData[i]==6) {
+		    		player[i]=new JButton(water);
+			    	boardPanel.add(player[i]);
+		    	}
+		    	else {
+		    		player[i]=new JButton(bship);
+		    		boardPanel.add(player[i]);
+		    	}
+		    }
+		}
+		else {//p2 screen is upside down
+		    for (i = 0; i < player.length; i++)
+		    {
+		    	playerData[i]=6;
+		    	if(playerData[i]==6) {
+		    		player[i]=new JButton(water);
+			    	boardPanel.add(player[i]);
+		    	}
+		    	else {
+		    		player[i]=new JButton(bship);
+		    		boardPanel.add(player[i]);
+		    	}
+		    }
+		    for (i = 0; i < opponent.length; i++)
+		    {
+		       opponentData[i]=(i%2)+2;
+		    	if(opponentData[i]==7) {
+		    		opponent[i]=new JButton(watermiss);
+			    	boardPanel.add(opponent[i]);
+		    	}
+		    	else {
+		    		opponent[i]=new JButton(waterinv);
+		    		boardPanel.add(opponent[i]);
+		    	}
+		    }
+		}
 	    
 	    
 	    this.setVisible(true);

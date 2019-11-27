@@ -63,8 +63,12 @@ public class BattleshipGame {
 		//pg = new playGame();
 		System.out.println(pg);
 		System.out.println(pg.getClass());
-		pg.turn(arg0.getp1Turn(), arg0.getboardIndex(), arg0.getp1BoardClick());
-		
+		if(pg.placeShips) {
+			pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex(),arg0.getp1BoardClick());
+		}
+		else {
+			pg.turn(arg0.getp1Turn(), arg0.getboardIndex(), arg0.getp1BoardClick());
+		}
 		//send to server new bsc with updated values
 		System.out.println("Send battleshipcomm to client: "+ arg0.getClass());
 		

@@ -11,10 +11,12 @@ public class battleshipComm  implements Serializable {
 	private int boardIndex;
 	private int boardDataValue;
 	private String message;
+	private boolean validmove;
 	private boolean gameOver;
 	private boolean placeShips;
 	private boolean p1Turn;
 	private boolean p1BoardClick;
+	private int shipLength;
 	
 	
 	//This constructor assigns the index of the button the player clicked
@@ -22,6 +24,7 @@ public class battleshipComm  implements Serializable {
 	
 	public battleshipComm(int boardIndex) {
 		this.boardIndex = boardIndex;
+		shipLength=0;
 	}
 	
 	//setters
@@ -48,6 +51,12 @@ public class battleshipComm  implements Serializable {
 	}
 	public void setp1BoardClick(boolean p1Board) {
 		this.p1BoardClick = p1Board;
+	}
+	public void setValidMove(boolean vm) {
+		this.validmove = vm;
+	}
+	public void setShipLength(int s) {
+		this.shipLength=s;
 	}
 	
 	// Getters
@@ -76,6 +85,12 @@ public class battleshipComm  implements Serializable {
 	}
 	public boolean getp1BoardClick() {
 		return p1BoardClick;
+	}
+	public boolean getValidMove() {
+		return validmove;
+	}
+	public int getShipLength() {
+		return shipLength;
 	}
 
 }

@@ -116,187 +116,239 @@ public class BattleshipController implements ActionListener{
 	
 	public void receiveDataFromServer(battleshipComm bscomm) {
 		this.bscomm = bscomm;
-		System.out.println("datafromserver");
-		System.out.println(p1 + " "+bscomm.getp1BoardClick());
+		System.out.println("Data from Server");
+		System.out.println("Player 1: "+p1);
+		System.out.println("P1 Board Click: "+bscomm.getp1BoardClick());
 		int i = bscomm.getboardIndex();
 		int sprite = bscomm.getDataValue();
 		ImageIcon newSprite;
-		if (p1) {
-			if (bscomm.getp1BoardClick()) {
-				switch (sprite){
-				case 0:
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					//ship
-					//change to shiphit
-					newSprite=bshiphit;
-					player[i].setIcon(newSprite);
-					//decrement ship no
-					//messageToPlayer = new String("There is already a ship here!");
-					//p1shipData[p1boardData[boardIndex]]--;
-					//p1boardData[boardIndex]=5;
-					//p1Turn = false;
-					break;
-				case 5:
-					//already hit here
-					//does not change turn
-					//messageToPlayer = new String("Board Data Error: 5");
-					break;
-				case 6:
-					//water
-					//Place a ship here********************************************
-					//messageToPlayer = new String("AddShipToP1Board");
-					//p1boardData[boardIndex]=7;
-					//p1Turn = addShipToP1Board(boardIndex);
-					newSprite=watermiss;
-					player[i].setIcon(newSprite);
-					break;
-				case 7:
-					//watermiss
-					//already missed here
-					//does not change turn
-					//messageToPlayer = new String("Board Data Error: 7");
-					break;
-				default:
-					//data error
-					//messageToPlayer = new String("Board Data Error, something went wrong");
-					break;
+		
+		//if (bscomm.getValidMove()) {
+			if (p1) {
+				if (bscomm.getp1BoardClick()) {
+					switch (sprite){
+					case 0:
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+						//ship
+						//change to ship
+						int y=0;
+						newSprite=bship;
+						while(y<sprite) {
+							
+							player[i+y].setIcon(newSprite);
+							y++;
+						}
+						msgText.setText(bscomm.getMessage());
+						//decrement ship no
+						//messageToPlayer = new String("There is already a ship here!");
+						//p1shipData[p1boardData[boardIndex]]--;
+						//p1boardData[boardIndex]=5;
+						//p1Turn = false;
+						break;
+					case 5:
+						//hit sprite
+						newSprite=bshiphit;
+						player[i].setIcon(newSprite);
+						msgText.setText(bscomm.getMessage());
+						break;
+					case 6:
+						//water
+						//Place a ship here********************************************
+						//messageToPlayer = new String("AddShipToP1Board");
+						//p1boardData[boardIndex]=7;
+						//p1Turn = addShipToP1Board(boardIndex);
+//						newSprite=watermiss;
+//						player[i].setIcon(newSprite);
+//						msgText.setText(bscomm.getMessage());
+						break;
+					case 7:
+						//watermiss
+						newSprite=watermiss;
+						player[i].setIcon(newSprite);
+						msgText.setText(bscomm.getMessage());
+						break;
+					default:
+						//data error
+						//messageToPlayer = new String("Board Data Error, something went wrong");
+						break;
+					}
+				}
+				else { //(!p1 boardclick)
+					switch (sprite){
+					case 0:
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+						//ship
+						//change to shiphit
+						
+						int y=0;
+						newSprite=bship;
+						while(y<sprite) {
+							opponent[i+y].setIcon(newSprite);
+							y++;
+						}
+						msgText.setText(bscomm.getMessage());
+						//decrement ship no
+						//messageToPlayer = new String("There is already a ship here!");
+						//p1shipData[p1boardData[boardIndex]]--;
+						//p1boardData[boardIndex]=5;
+						//p1Turn = false;
+						break;
+					case 5:
+						//hit here
+						newSprite=bshiphit;
+						opponent[i].setIcon(newSprite);
+						msgText.setText(bscomm.getMessage());
+						//does not change turn
+						//messageToPlayer = new String("Board Data Error: 5");
+						break;
+					case 6:
+						//water
+						//Place a ship here********************************************
+						//messageToPlayer = new String("AddShipToP1Board");
+						//p1boardData[boardIndex]=7;
+						//p1Turn = addShipToP1Board(boardIndex);
+//						newSprite=watermiss;
+//						opponent[i].setIcon(newSprite);
+						break;
+					case 7:
+						//watermiss
+						newSprite=watermiss;
+						opponent[i].setIcon(newSprite);
+						msgText.setText(bscomm.getMessage());
+						break;
+						//already missed here
+						//does not change turn
+						//messageToPlayer = new String("Board Data Error: 7");
+						
+					default:
+						//data error
+						//messageToPlayer = new String("Board Data Error, something went wrong");
+						break;
+					}
 				}
 			}
-			else { //(!p1 boardclick)
-				switch (sprite){
-				case 0:
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					//ship
-					//change to shiphit
-					newSprite=bshiphit;
-					opponent[i].setIcon(newSprite);
-					//decrement ship no
-					//messageToPlayer = new String("There is already a ship here!");
-					//p1shipData[p1boardData[boardIndex]]--;
-					//p1boardData[boardIndex]=5;
-					//p1Turn = false;
-					break;
-				case 5:
-					//already hit here
-					//does not change turn
-					//messageToPlayer = new String("Board Data Error: 5");
-					break;
-				case 6:
-					//water
-					//Place a ship here********************************************
-					//messageToPlayer = new String("AddShipToP1Board");
-					//p1boardData[boardIndex]=7;
-					//p1Turn = addShipToP1Board(boardIndex);
-					newSprite=watermiss;
-					opponent[i].setIcon(newSprite);
-					break;
-				case 7:
-					//watermiss
-					//already missed here
-					//does not change turn
-					//messageToPlayer = new String("Board Data Error: 7");
-					break;
-				default:
-					//data error
-					//messageToPlayer = new String("Board Data Error, something went wrong");
-					break;
+			else { //(!p1)
+				if (bscomm.getp1BoardClick()) {
+					switch (sprite){
+					case 0:
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+						//ship
+						//change to ship
+						int y=0;
+						newSprite=bship;
+						while(y<sprite) {	
+							player[i+y].setIcon(newSprite);
+							y++;
+						}
+						msgText.setText(bscomm.getMessage());
+						//decrement ship no
+						//messageToPlayer = new String("There is already a ship here!");
+						//p1shipData[p1boardData[boardIndex]]--;
+						//p1boardData[boardIndex]=5;
+						//p1Turn = false;
+						break;
+					case 5:
+						//hit here
+						//does not change turn
+						//messageToPlayer = new String("Board Data Error: 5");
+						newSprite=bshiphit;
+						player[i].setIcon(newSprite);
+						msgText.setText(bscomm.getMessage());
+						break;
+					case 6:
+						//water
+						//Place a ship here********************************************
+						//messageToPlayer = new String("AddShipToP1Board");
+						//p1boardData[boardIndex]=7;
+						//p1Turn = addShipToP1Board(boardIndex);
+//						newSprite=watermiss;
+//						player[i].setIcon(newSprite);
+						break;
+					case 7:
+						//watermiss
+						newSprite=watermiss;
+						player[i].setIcon(newSprite);
+						msgText.setText(bscomm.getMessage());
+						break;
+						//already missed here
+						//does not change turn
+						//messageToPlayer = new String("Board Data Error: 7");
+						
+					default:
+						//data error
+						//messageToPlayer = new String("Board Data Error, something went wrong");
+						break;
+					}
+				}
+				else { //(!p1 boardclick)
+					switch (sprite){
+					case 0:
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+						//ship
+						//change to ship
+						int y=0;
+						newSprite=bship;
+						while(y<sprite) {
+							opponent[i+y].setIcon(newSprite);
+							y++;
+						}
+						msgText.setText(bscomm.getMessage());
+						//decrement ship no
+						//messageToPlayer = new String("There is already a ship here!");
+						//p1shipData[p1boardData[boardIndex]]--;
+						//p1boardData[boardIndex]=5;
+						//p1Turn = false;
+						break;
+					case 5:
+						newSprite=bshiphit;
+						opponent[i].setIcon(newSprite);
+						msgText.setText(bscomm.getMessage());
+						//already hit here
+						//does not change turn
+						//messageToPlayer = new String("Board Data Error: 5");
+						break;
+					case 6:
+						//water
+						//Place a ship here********************************************
+						//messageToPlayer = new String("AddShipToP1Board");
+						//p1boardData[boardIndex]=7;
+						//p1Turn = addShipToP1Board(boardIndex);
+//						newSprite=watermiss;
+//						opponent[i].setIcon(newSprite);
+//						msgText.setText(bscomm.getMessage());
+						break;
+					case 7:
+						//watermiss
+						newSprite=watermiss;
+						opponent[i].setIcon(newSprite);
+						msgText.setText(bscomm.getMessage());
+						//already missed here
+						//does not change turn
+						//messageToPlayer = new String("Board Data Error: 7");
+						break;
+					default:
+						//data error
+						//messageToPlayer = new String("Board Data Error, something went wrong");
+						break;
+					}
 				}
 			}
-		}
-		else { //(!p1)
-			if (bscomm.getp1BoardClick()) {
-				switch (sprite){
-				case 0:
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					//ship
-					//change to shiphit
-					newSprite=bshiphit;
-					player[i].setIcon(newSprite);
-					//decrement ship no
-					//messageToPlayer = new String("There is already a ship here!");
-					//p1shipData[p1boardData[boardIndex]]--;
-					//p1boardData[boardIndex]=5;
-					//p1Turn = false;
-					break;
-				case 5:
-					//already hit here
-					//does not change turn
-					//messageToPlayer = new String("Board Data Error: 5");
-					break;
-				case 6:
-					//water
-					//Place a ship here********************************************
-					//messageToPlayer = new String("AddShipToP1Board");
-					//p1boardData[boardIndex]=7;
-					//p1Turn = addShipToP1Board(boardIndex);
-					newSprite=watermiss;
-					player[i].setIcon(newSprite);
-					break;
-				case 7:
-					//watermiss
-					//already missed here
-					//does not change turn
-					//messageToPlayer = new String("Board Data Error: 7");
-					break;
-				default:
-					//data error
-					//messageToPlayer = new String("Board Data Error, something went wrong");
-					break;
-				}
-			}
-			else { //(!p1 boardclick)
-				switch (sprite){
-				case 0:
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					//ship
-					//change to shiphit
-					newSprite=bshiphit;
-					opponent[i].setIcon(newSprite);
-					//decrement ship no
-					//messageToPlayer = new String("There is already a ship here!");
-					//p1shipData[p1boardData[boardIndex]]--;
-					//p1boardData[boardIndex]=5;
-					//p1Turn = false;
-					break;
-				case 5:
-					//already hit here
-					//does not change turn
-					//messageToPlayer = new String("Board Data Error: 5");
-					break;
-				case 6:
-					//water
-					//Place a ship here********************************************
-					//messageToPlayer = new String("AddShipToP1Board");
-					//p1boardData[boardIndex]=7;
-					//p1Turn = addShipToP1Board(boardIndex);
-					newSprite=watermiss;
-					opponent[i].setIcon(newSprite);
-					break;
-				case 7:
-					//watermiss
-					//already missed here
-					//does not change turn
-					//messageToPlayer = new String("Board Data Error: 7");
-					break;
-				default:
-					//data error
-					//messageToPlayer = new String("Board Data Error, something went wrong");
-					break;
-				}
-			}
-		}
+		//}
+		//else {
+		//	msgText.setText("Invalid Move: " + bscomm.getMessage());
+		//}
 		
 		
 		
@@ -311,6 +363,9 @@ public class BattleshipController implements ActionListener{
 	
 	public void setp1(boolean p) {
 		p1=p;
+	}
+	public boolean getp1() {
+		return p1;
 	}
 	
 }

@@ -42,12 +42,13 @@ public class BsClient extends AbstractClient {
 				//start game
 				 startWindow.dispose();
 			      bsc = new BattleshipController();
-				  bsview = new BattleshipView();
+			      bsc.setp1(((LoginData) msg).getp1());
+				  bsview = new BattleshipView(bsc.getp1());
 				  bsdata = new BattleshipData();
 				  bsdata.setClient(this);
 				  bsc.setBattleshipData(bsdata);
 				  bsc.setBattleshipView(bsview);
-				  bsc.setp1(((LoginData) msg).getp1());
+				  
 			}
 		}
 		else if(msg instanceof CreateAccountData) {
