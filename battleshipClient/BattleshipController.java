@@ -106,6 +106,7 @@ public class BattleshipController implements ActionListener{
 	    	  // player[i].setIcon(bshiphit);
 	    	   bsdata.setboardIndex(i);
 	    	   bsdata.setp1BoardClick(true);
+	    	   bsdata.setp1(p1);
 	    	   bsdata.setMessage(msgText.getText());
 	       }
 	    }

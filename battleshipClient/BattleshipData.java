@@ -18,6 +18,7 @@ public class BattleshipData {
 	private boolean p1BoardClick;
 	private String message;
 	private boolean gameOver;
+	private boolean p1;
 	
 	
 	private battleshipComm bsc;
@@ -46,6 +47,9 @@ public class BattleshipData {
 	public void setp1BoardClick(boolean p1Board) {
 		this.p1BoardClick = p1Board;
 	}
+	public void setp1(boolean p) {
+		this.p1 = p;
+	}
 	
 	public void sendToServer()  {
 		System.out.println(message);
@@ -56,6 +60,7 @@ public class BattleshipData {
 		bsc = new battleshipComm(boardIndex);
 		bsc.setMessage(message);
 		bsc.setp1BoardClick(p1BoardClick);
+		bsc.setp1Turn(p1);
 		try {
 			bsclient.sendToServer(bsc);
 		} catch (IOException e) {

@@ -281,7 +281,7 @@ public class playGame {
 				messageToPlayer = new String("HIT!!!");
 				p1shipData[p1boardData[boardIndex]]--;
 				p1boardData[boardIndex]=5;
-				p1Turn = false;
+				p1Turn = true;
 				break;
 			case 5:
 				//already hit here
@@ -293,7 +293,7 @@ public class playGame {
 				//change to miss
 				messageToPlayer = new String("MISS!!!");
 				p1boardData[boardIndex]=7;
-				p1Turn = false;
+				p1Turn = true;
 				break;
 			case 7:
 				//watermiss
@@ -325,7 +325,7 @@ public class playGame {
 				p2shipData[p2boardData[boardIndex]]--;
 				p2boardData[boardIndex]=5;
 				checkShips(p1Turn);
-				p1Turn=true;
+				p1Turn=false;
 				break;
 			case 5:
 				//already hit here
@@ -337,7 +337,7 @@ public class playGame {
 				//change to miss
 				messageToPlayer = new String("MISS!!!");
 				p2boardData[boardIndex]=7;
-				p1Turn=true;
+				p1Turn=false;
 				break;
 			case 7:
 				//watermiss
@@ -355,7 +355,7 @@ public class playGame {
 		bsc = new battleshipComm(boardIndex);
 		bsc.setDataValue(p2boardData[boardIndex]);
 		bsc.setMessage(messageToPlayer);
-		bsc.setp1Turn(!p1Turn);
+		bsc.setp1Turn(p1Turn);
 		bsc.setp1BoardClick(boardClick);
 		System.out.println(messageToPlayer);
 	}

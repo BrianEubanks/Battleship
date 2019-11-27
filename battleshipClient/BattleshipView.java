@@ -2,8 +2,11 @@ package battleshipClient;
 
 import javax.swing.*;
 
-
+import java.awt.geom.Line2D;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
@@ -142,7 +145,9 @@ public class BattleshipView extends JFrame{
 	    	}
 	    }
 	    
+	    
 	    this.setVisible(true);
+
 		
 		
 	}
