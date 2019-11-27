@@ -242,9 +242,9 @@ public class playGame {
 		}
 	}
 	
-	public void turn(boolean player1, int boardIndex) {
-		System.out.println("Start Turn");
-		System.out.println(player1 + "  " + boardIndex);
+	public void turn(boolean player1, int boardIndex, boolean boardClick) {
+		System.out.println("Start Turn "+ p1Turn);
+		System.out.println(player1 + "  " + boardIndex + " "+ boardClick);
 		// This first if should not ever be true
 		// We Check for placeships in BattleshipGame before calling turn() or placeShips();
 		//
@@ -257,7 +257,13 @@ public class playGame {
 		else if (player1 != p1Turn) {
 			// its not your turn!!
 			// send back to client
-			messageToPlayer = new String("It's Not Your Turn!!!");
+			messageToPlayer = new String("It's Not Your Turn!!! Player1: "+player1);
+			System.out.println(messageToPlayer);
+		}
+		else if (player1 == boardClick) {
+			// its not your turn!!
+			// send back to client
+			messageToPlayer = new String("Don't Shoot your own ships!!!");
 			System.out.println(messageToPlayer);
 		}
 		//player2s turn
@@ -350,6 +356,7 @@ public class playGame {
 		bsc.setDataValue(p2boardData[boardIndex]);
 		bsc.setMessage(messageToPlayer);
 		bsc.setp1Turn(!p1Turn);
+		bsc.setp1BoardClick(boardClick);
 		System.out.println(messageToPlayer);
 	}
 	

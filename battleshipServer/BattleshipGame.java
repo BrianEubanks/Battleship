@@ -1,6 +1,9 @@
 package battleshipServer;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import ocsf.server.ConnectionToClient;
 
 public class BattleshipGame {
 
@@ -12,32 +15,40 @@ public class BattleshipGame {
 	private playGame pg;
 	
 	
-	private long playerOne; //client id?
-	private long playerTwo;
+	private ConnectionToClient playerOne; //client id?
+	private ConnectionToClient playerTwo;
+	private long playerOneID; //client id?
+	private long playerTwoID;
 	
 	public BattleshipGame() {
-		playerOne = 0;
-		playerTwo = 0;
+		playerOneID = 0;
+		playerTwoID = 0;
 		//pg = new playGame();
 	}
 	
-	public void addPlayer(long l) {
-		if (playerOne != 0) {
-			playerOne = l;
+	public boolean addPlayer(ConnectionToClient c) {
+		
+		if (playerOneID == 0) {
+			playerOneID = c.getId();
+			playerOne = c;
 			System.out.println(playerOne + " Connected");
+			return true;
 		}
-		else if (playerTwo != 0) {
-			playerTwo = l;
+		else if (playerTwoID == 0) {
+			playerTwoID = c.getId();
+			playerTwo = c;
 			System.out.println(playerTwo + " Connected");
 			pg = new playGame();
+			return false;
 			//start game when two players are in
 		}
 		else {
 			//game full
+			return false;
 		}
 	}
 	
-	public battleshipComm handleCommunication(battleshipComm arg0, long l) {
+	public void handleCommunication(battleshipComm arg0, long l) {
 		
 		System.out.println("start handle Comms");
 		//pg = games.get(arg0.gameIndex);
@@ -49,14 +60,24 @@ public class BattleshipGame {
 		//}
 		
 		//update bsc
-		pg = new playGame();
+		//pg = new playGame();
 		System.out.println(pg);
 		System.out.println(pg.getClass());
-		pg.turn(arg0.getp1Turn(), arg0.getboardIndex());
+		pg.turn(arg0.getp1Turn(), arg0.getboardIndex(), arg0.getp1BoardClick());
 		
 		//send to server new bsc with updated values
 		System.out.println("Send battleshipcomm to client: "+ arg0.getClass());
-		return pg.getComms();
+		
+		try {
+			playerOne.sendToClient(pg.getComms());
+			playerTwo.sendToClient(pg.getComms());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		//return pg.getComms();
 	}
 	
 }

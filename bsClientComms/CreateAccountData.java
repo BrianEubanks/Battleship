@@ -6,11 +6,13 @@ public class CreateAccountData implements Serializable {
 	private String username;
 	private String password;
 	private String passwordconf;
+	private boolean status;
 	
 	public CreateAccountData() {
 //		this.username = username;
 //		this.password = password;
 //		this.passwordconf = passwordconf;
+		status=false;
 	}
 
 	public void setUsername(String username) {
@@ -35,5 +37,12 @@ public class CreateAccountData implements Serializable {
 	
 	public String getPasswordConf() {
 		return passwordconf;
+	}
+	public void setStatus(boolean s) {
+		status=s;
+	}
+	
+	public boolean getStatus() {
+		return status;
 	}
 }

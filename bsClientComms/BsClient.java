@@ -35,18 +35,27 @@ public class BsClient extends AbstractClient {
 			System.out.println(this.isConnected());
 		}
 		else if(msg instanceof LoginData) {
-			System.out.println("LoginData received  "+msg);	
-			System.out.println(msg.getClass());
-			System.out.println(this.isConnected());
-			System.out.println("other message: "+this.isConnected());
+			System.out.println("LoginData received  "+msg+" Status: "+((LoginData) msg).getStatus());
 			startWindow.setClient(this);
+			if(((LoginData) msg).getStatus()) {
+				//login successful
+				//start game
+				 startWindow.dispose();
+			      bsc = new BattleshipController();
+				  bsview = new BattleshipView();
+				  bsdata = new BattleshipData();
+				  bsdata.setClient(this);
+				  bsc.setBattleshipData(bsdata);
+				  bsc.setBattleshipView(bsview);
+				  bsc.setp1(((LoginData) msg).getp1());
+			}
 		}
 		else if(msg instanceof CreateAccountData) {
-			System.out.println("CreateAccountData received  "+msg);	
-			System.out.println(msg.getClass());
-			System.out.println(this.isConnected());
-			System.out.println("other message: "+this.isConnected());
+			System.out.println("CreateAccountData received  "+msg+" Status: "+((CreateAccountData) msg).getStatus());
 			startWindow.setClient(this);
+			if(((CreateAccountData) msg).getStatus()) {
+				//account create successfully
+			}
 		}
 		else{
 			System.out.println("Server Message received  "+msg);	
@@ -64,11 +73,6 @@ public class BsClient extends AbstractClient {
 				
 			}
 		}
-		
-		//else {
-		//	serverMsg.append("Server: " + (String) msg+"\n");
-		//}
-		//else battlehsipcomms
 	}
 	public void connectionException(Throwable exception) {
 		System.out.println("Connection Exception Occured");
@@ -87,12 +91,12 @@ public class BsClient extends AbstractClient {
 			//loggedIn = true;
 			//this is adjusted after logged in above in handlemessagefrom server
 		//start game
-	      bsc = new BattleshipController();
-		  bsview = new BattleshipView();
-		  bsdata = new BattleshipData();
-		  bsdata.setClient(this);
-		  bsc.setBattleshipData(bsdata);
-		  bsc.setBattleshipView(bsview);
+//	      bsc = new BattleshipController();
+//		  bsview = new BattleshipView();
+//		  bsdata = new BattleshipData();
+//		  bsdata.setClient(this);
+//		  bsc.setBattleshipData(bsdata);
+//		  bsc.setBattleshipView(bsview);
 		}
 	}
 	
