@@ -75,13 +75,13 @@ public class playGame {
 		p1shipData[1]=3;
 		p1shipData[2]=3;
 		p1shipData[3]=4;
-		p1shipData[4]=5;
+		p1shipData[4]=4;
 		p1shipCount=0;
 		p2shipData[0]=2;
 		p2shipData[1]=3;
 		p2shipData[2]=3;
 		p2shipData[3]=4;
-		p2shipData[4]=5;		
+		p2shipData[4]=4;		
 		p2shipCount=0;
 		
 		//Players will place ships
@@ -127,9 +127,12 @@ public class playGame {
 		}
 		// add the ship to the boardData
 		while (index < shipDataPoints) {
-			p1boardData[boardIndex+index]=shipDataPoints;
+			//p1boardData[boardIndex+index]=p1shipData[p1shipCount];
+			p1boardData[boardIndex+index]=p1shipCount;
 			index++;
 		}
+		System.out.println("P1ShipData & Count: "+p1shipData[p1shipCount]+" "+p1shipCount);
+		System.out.println("P1BoardData"+p1boardData[boardIndex]);
 		
 		p1shipCount++;
 		if(p1shipCount>3) {
@@ -142,8 +145,7 @@ public class playGame {
 			//validMove=false;
 		}
 		
-		System.out.println("P1ShipData & Count: "+p1shipData[p1shipCount]+" "+p1shipCount);
-		System.out.println(p1boardData[boardIndex]);
+		
 		return true;
 	}
 	
@@ -151,6 +153,7 @@ public class playGame {
 		int index = 0;
 		int checkIndex = 0;
 		int shipDataPoints = p2shipData[p2shipCount];
+		System.out.println("ShipDataPoints: "+shipDataPoints);
 		
 		//check for wrapping at end of line
 		if((boardIndex%10)+shipDataPoints>9) {
@@ -167,11 +170,14 @@ public class playGame {
 		}
 		// add the ship to the boardData
 		while (index < shipDataPoints) {
-			p2boardData[boardIndex+index]=shipDataPoints;
+			//p2boardData[boardIndex+index]=p2shipData[p2shipCount];
+			p2boardData[boardIndex+index]=p2shipCount;
+			System.out.println(p2boardData[boardIndex+index]);
 			index++;
 		}
 		
 		p2shipCount++;
+		
 		if(p2shipCount>3) {
 			placeShipsp2 = false;
 			System.out.println("PLAYER 2 SHIPS DONE");
@@ -293,10 +299,16 @@ public class playGame {
 		bsc = new battleshipComm(boardIndex);
 		if(player1) {
 			bsc.setDataValue(p1boardData[boardIndex]);
+			System.out.println("p1board data at click: "+p1boardData[boardIndex]);
+			System.out.println("p1shipcount: "+p1shipCount);
 		}
 		else {
 			bsc.setDataValue(p2boardData[boardIndex]);
+			System.out.println("p2board data at click: "+p2boardData[boardIndex]);
+			System.out.println("p2shipcount: "+p2shipCount);
 		}
+		
+		
 		bsc.setMessage(messageToPlayer);
 		bsc.setp1Turn(p1Turn);
 		bsc.setValidMove(validMove);
@@ -315,14 +327,36 @@ public class playGame {
 	//Check to make sure a ship wasn't sunk during turn
 	//If all ships are sunk game over
 	// run endGame
-	public void checkShips(boolean player1){
+	public void checkShips(boolean player1, int shipNo, int shipSize){
+		System.out.println("CheckShips: "+player1);
 		if (player1) {
 			//check player 2 ships
+			if(p2shipData[shipNo]==0) {
+				p2shipCount--;
+			}
+			System.out.println("ShipNo: "+shipNo);
+			System.out.println("ShipSize: "+shipSize);
+			System.out.println(p2shipCount);
+			if(p2shipCount==0) {
+				p1Turn=true;
+				endGame();
+			}
 			
 		}
 		else {
 			//check player 1 ships
-			
+			int i = 0;
+			while (i < 4) {
+				if(p1shipData[i]==0) {
+					p1shipCount--;
+					p1shipData[i]=-1;//don't double count
+				}
+				i++;
+			}
+			if(p1shipCount==0) {
+				p1Turn=false;
+				endGame();
+			}
 		}
 	}
 	
@@ -369,6 +403,7 @@ public class playGame {
 				//decrement ship no
 				messageToPlayer = new String("HIT!!! Player1: "+player1);
 				p1shipData[p1boardData[boardIndex]]--;
+				checkShips(player1,p1boardData[boardIndex],p1shipData[p1boardData[boardIndex]]);
 				p1boardData[boardIndex]=5;
 				p1Turn = true;
 				validMove=true;
@@ -416,9 +451,14 @@ public class playGame {
 				//change to shiphit
 				//decrement ship no
 				messageToPlayer = new String("HIT!!! Player1: "+player1);
+				System.out.println(messageToPlayer);
+				System.out.println("BoardData: "+p2boardData[boardIndex]);
+				System.out.println("ShipNo: "+p2boardData[boardIndex]);
+				System.out.println("ShipSize: "+p2shipData[p2boardData[boardIndex]]);
 				p2shipData[p2boardData[boardIndex]]--;
+				System.out.println("NewShipSize: "+p2shipData[p2boardData[boardIndex]]);
+				checkShips(player1,p2boardData[boardIndex],p2shipData[p2boardData[boardIndex]]);
 				p2boardData[boardIndex]=5;
-				checkShips(p1Turn);
 				p1Turn=false;
 				validMove=true;
 				break;
@@ -451,6 +491,7 @@ public class playGame {
 				break;
 			}
 		}
+		//checkShips(player1);
 		bsc = new battleshipComm(boardIndex);
 		if(player1) {
 			bsc.setDataValue(p2boardData[boardIndex]);
@@ -472,7 +513,17 @@ public class playGame {
 	
 	//End Game
 	public void endGame() {
-	
+		bsc = new battleshipComm(0);
+		if(p1Turn) {
+			messageToPlayer = new String("Player1 Wins!!! ");
+		}
+		else {
+			messageToPlayer = new String("Player2 Wins!!! ");
+		}
+		bsc.setMessage(messageToPlayer);
+		bsc.setp1Turn(p1Turn);
+		bsc.setGameOver(true);
+		System.out.println(messageToPlayer);
 	}
 	
 }

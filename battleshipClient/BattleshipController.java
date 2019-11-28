@@ -30,6 +30,14 @@ public class BattleshipController implements ActionListener{
 	private boolean p1;
 	
 	JLabel msgText;
+	
+	// 0 - ship length 2
+	// 1 - ship length 3
+	// 2 - ship length 3
+	// 3 - ship length 4
+	// 4 - ship length 5
+	private int[] shipData = new int[5];
+	
 
 	public void setBattleshipView(BattleshipView bsview) {
 		this.bsview = bsview;
@@ -42,6 +50,12 @@ public class BattleshipController implements ActionListener{
 		bship = bsview.getbshipIcon();
 		watermiss = bsview.getwatermissIcon();
 		bshiphit = bsview.getbshiphitIcon();
+		
+		shipData[0]=2;
+		shipData[1]=3;
+		shipData[2]=3;
+		shipData[3]=4;
+		shipData[4]=4;
 		
 	    for (int i = 0; i < opponent.length; i++)
 	    {
@@ -121,8 +135,13 @@ public class BattleshipController implements ActionListener{
 		System.out.println("P1 Board Click: "+bscomm.getp1BoardClick());
 		int i = bscomm.getboardIndex();
 		int sprite = bscomm.getDataValue();
+		System.out.println("Sprite value: "+sprite);
 		ImageIcon newSprite;
-		
+		if(bscomm.getGameOver()) {
+			System.out.println(bscomm.getMessage());
+			msgText.setText(bscomm.getMessage());
+		}
+		else {
 		//if (bscomm.getValidMove()) {
 			if (p1) {
 				if (bscomm.getp1BoardClick()) {
@@ -136,12 +155,13 @@ public class BattleshipController implements ActionListener{
 						//change to ship
 						int y=0;
 						newSprite=bship;
-						while(y<sprite) {
+						while(y<shipData[sprite]) {
 							
 							player[i+y].setIcon(newSprite);
 							y++;
 						}
 						msgText.setText(bscomm.getMessage());
+						System.out.println(sprite);
 						//decrement ship no
 						//messageToPlayer = new String("There is already a ship here!");
 						//p1shipData[p1boardData[boardIndex]]--;
@@ -188,7 +208,7 @@ public class BattleshipController implements ActionListener{
 						
 						int y=0;
 						newSprite=bship;
-						while(y<sprite) {
+						while(y<shipData[sprite]) {
 							opponent[i+y].setIcon(newSprite);
 							y++;
 						}
@@ -245,7 +265,7 @@ public class BattleshipController implements ActionListener{
 						//change to ship
 						int y=0;
 						newSprite=bship;
-						while(y<sprite) {	
+						while(y<shipData[sprite]) {	
 							player[i+y].setIcon(newSprite);
 							y++;
 						}
@@ -300,7 +320,7 @@ public class BattleshipController implements ActionListener{
 						//change to ship
 						int y=0;
 						newSprite=bship;
-						while(y<sprite) {
+						while(y<shipData[sprite]) {
 							opponent[i+y].setIcon(newSprite);
 							y++;
 						}
@@ -345,6 +365,7 @@ public class BattleshipController implements ActionListener{
 					}
 				}
 			}
+		}
 		//}
 		//else {
 		//	msgText.setText("Invalid Move: " + bscomm.getMessage());
