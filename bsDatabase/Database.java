@@ -27,7 +27,7 @@ public class Database
     //Add your code here
 	    
 	  try {
-		con = DriverManager.getConnection("jdbc:mysql://localhost:80/student_space","student","hello");
+		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_space","student","hello");
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
