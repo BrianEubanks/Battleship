@@ -8,7 +8,9 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import battleshipServer.battleshipComm;
@@ -67,6 +69,8 @@ public class BattleshipController implements ActionListener, MouseListener{
 	       opponent[i].addMouseListener(this);
 	       player[i].addMouseListener(this);
 	    }
+		JOptionPane.showMessageDialog(new JFrame(), "Place Your Ships on the bottom half!");
+
 		
 	}
 	
@@ -182,6 +186,8 @@ public class BattleshipController implements ActionListener, MouseListener{
 		if(bscomm.getGameOver()) {
 			System.out.println(bscomm.getMessage());
 			msgText.setText(bscomm.getMessage());
+			JOptionPane.showMessageDialog(new JFrame(), bscomm.getMessage());
+
 		}
 		else {
 		if (bscomm.getValidMove()) {
@@ -453,6 +459,9 @@ public class BattleshipController implements ActionListener, MouseListener{
 
 		else {
 			msgText.setText("Invalid Move: " + bscomm.getMessage());
+			JOptionPane.showMessageDialog(new JFrame(), bscomm.getMessage());
+
+			
 		}
 		
 		}
