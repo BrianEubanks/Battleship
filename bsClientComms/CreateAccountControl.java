@@ -2,6 +2,8 @@ package bsClientComms;
 
 import java.io.IOException;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -25,9 +27,13 @@ public class CreateAccountControl {
 		
 		if((usern.getText().equals(""))||(passw.getText().equals(""))||(passwconf.getText().equals(""))) {
 			System.out.println("Enter a username and password");
+			JOptionPane.showMessageDialog(new JFrame(), "Enter a username and password");
+
 		}
 		else if(!(passw.getText().equals(passwconf.getText()))) {
 			System.out.println("Passwords Must Match");
+			JOptionPane.showMessageDialog(new JFrame(), "Passwords Must Match");
+
 		}
 		else {
 			capData.setUsername(usern.getText());

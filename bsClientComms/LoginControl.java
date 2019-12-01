@@ -2,8 +2,8 @@ package bsClientComms;
 
 import java.io.IOException;
 
-
-
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -24,6 +24,8 @@ public class LoginControl {
 	public void loginSubmit() {
 		if((usern.getText().equals(""))||(passw.getText().equals(""))) {
 			System.out.println("Enter a username and password");
+			JOptionPane.showMessageDialog(new JFrame(), "Enter a Username and Password");
+
 		}
 		else {
 			larrydavid = new LoginData(usern.getText(),passw.getText());
