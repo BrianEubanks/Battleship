@@ -14,6 +14,9 @@ On Windows...
 C:\xampp\mysql_start.bat
 ```
 
+
+The Following files can be used to setup the database table if not already setup.
+
 ### bsDBUser.sql
 
 Creates a 'student' user.
