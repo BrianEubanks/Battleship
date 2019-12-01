@@ -1,39 +1,82 @@
 # Battleship
 
-Packages
+Software Engineering Project.
+Austin Ahne, Kevin Camp, Brian Eubanks, Job McCully, Josh McIlvoy
 
-1. ClientGUI - UI to handle Client Logging into Server
-2. Client - Client Communications
-3. ServerGUI - UI Handle setting up server.
-4. Server - Server Communications
-5. BattleshipClient - Runs on the Client Side. The UI for playing the game
-  
-    a. battleshipData -- Model
-        
-        *client.sendToServer(bsc); - this line sends a battleshipComm object to the client to send to the server.
-  
-    b. battleshipView -- View
-  
-    c. battleshipController -- Controller
-        
-        *public void receiveDataFromServer(battleshipComm bsc). -- this line receives the battleshipComm object from the server
-  
-    d. battleshipComm -- Data object that the client will send to the server
-   
-   
-   
+## Setup
 
-  6. BattleshipServer - Runs on the Server Side. The rule checking for playing the game.
-  
-    a. battleshipGame -- Communicate between servers, handleMessageFromClient(), receive the Comm data object
-    
-    b. playGame -- Handle the Comm data object.
-    
-        * place ships initial
-        
-        * handle moves from players
-        
-        * game over
+### bsDBUser.sql
+
+Creates a 'student' user.
+Creates a 'studnet_space' database.
+
+### bsDB.sql & bsDBwin.sql
+
+Creates a 'user' table with 'id', 'username', and 'password' fields.
+
+## Starting the Program
+
+### Starting the Server
+
+On Windows, use the [bsServerWIN.bat]() file to start the Server.
+
+```bash
+bsServerWIN.bat
+```
+On OSX, use the [bsServer.sh]() file to start the Server.
+
+```bash
+./bsServer
+```
+### Starting the Clients
+
+On Windows, use the [bsClientWIN.bat]() file to start the program.
+
+```bash
+bsClientWIN.bat
+```
+
+On Windows, use the [bsClient.sh]() file to start the program.
+
+```bash
+bsClientWIN.bat
+```
+
+### Connecting to the Server
+
+Make sure to click the Listen button on the server before trying to connect a client.
+
+Once the server is listening, click Connect on the client to connect to the server.
+
+## Login
+
+Once a client is connected, the user may choose to create an account, or login. Once the user logins with a valid account,  they are presented with a game screen. When two users successfully login, the game starts.
+
+## GamePlay
+
+### Placing Ships
+
+The players begin by placing 4 ships. The BOTTOM half of the screen represents their own board. The ships are placed in the following order. Left clicking places a ship horizontally, right clicking places a ship vertically
+
+Ship 1: Length 2
+Ship 2: Length 3
+Ship 3: Length 3
+Ship 4: Length 4
+
+Once both players have placed all of their ships, the game play begins.
+
+### GamePlay
+
+Players alternate turns attemting to guess where their opponents ships are hidden. The TOP half of the screen represents the opponents board.
+
+### EndGame
+
+Once one of the players has sunken their opponents ships, the game is over
+
+
+
+
+
 
 
 
