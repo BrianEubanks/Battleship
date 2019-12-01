@@ -39,8 +39,10 @@ public class BsClient extends AbstractClient {
 			startWindow.setClient(this);
 			if(((LoginData) msg).getStatus()) {
 				//login successful
+				JOptionPane.showMessageDialog(new JFrame(), "Login Successful");
+
 				//start game
-				 startWindow.dispose();
+				  startWindow.dispose();
 			      bsc = new BattleshipController();
 			      bsc.setp1(((LoginData) msg).getp1());
 				  bsview = new BattleshipView(bsc.getp1());
@@ -50,12 +52,22 @@ public class BsClient extends AbstractClient {
 				  bsc.setBattleshipView(bsview);
 				  
 			}
+			else {
+				JOptionPane.showMessageDialog(new JFrame(), "Incorrect Login");
+
+				System.out.println("incorrect Login");
+			}
 		}
 		else if(msg instanceof CreateAccountData) {
 			System.out.println("CreateAccountData received  "+msg+" Status: "+((CreateAccountData) msg).getStatus());
 			startWindow.setClient(this);
 			if(((CreateAccountData) msg).getStatus()) {
 				//account create successfully
+				JOptionPane.showMessageDialog(new JFrame(), "Account Created Successfully");
+			}
+			else {
+				JOptionPane.showMessageDialog(new JFrame(), "Account Create Error");
+
 			}
 		}
 		else{

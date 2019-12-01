@@ -6,6 +6,8 @@ import java.util.*;
 
 public class BSDatabaseServer {
 
+	ArrayList<String> result = new ArrayList<String>();
+	
 	public BSDatabaseServer(String c, String t) throws IOException
 	  {
 	    
@@ -13,6 +15,7 @@ public class BSDatabaseServer {
 	    // Get the command line arguments.
 	    String command = c;
 	    String type = t;
+	    System.out.println(command);
 	    
 	    // Create the database object.
 	    Database database = new Database();
@@ -21,7 +24,7 @@ public class BSDatabaseServer {
 	    if (type.equals("Q"))
 	    {
 	      // Do the query.
-	      ArrayList<String> result = database.query(command);
+	      result = database.query(command);
 	     
 	      // Print the result.
 	      if (result != null)
@@ -34,6 +37,11 @@ public class BSDatabaseServer {
 	      else
 	      {
 	        System.out.println("Error executing query.");
+	        result = new ArrayList<String>();
+	        result.add("");
+	        result.add("");
+	        result.add("");
+	        
 	      }
 	    }
 	    
@@ -51,7 +59,17 @@ public class BSDatabaseServer {
 	        }
 
 	    }
-	  }
+	 }
+
+	public boolean validateUser(String username, String password) {
+		System.out.println("validateUser");
+		System.out.println("validateUser: "+password);
+		System.out.println("validateUser: "+result.get(2));
+		if(result.get(2).equals(password)){
+			return true;
+		}
+		return false;
+	}
 }
 	
 

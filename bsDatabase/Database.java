@@ -48,7 +48,7 @@ public class Database
   public ArrayList<String> query(String query)
   {
     //Add your code here
-
+	  ArrayList<String> result = new ArrayList<String>();
 	  
 	    try
 	    {
@@ -62,7 +62,7 @@ public class Database
 	      stmt=con.createStatement();  
 	    
 	      //Execute a query
-	      rs=stmt.executeQuery("select * from user");  
+	      rs=stmt.executeQuery(query);  
 	      
 	      //Get metadata about the query
 	      rmd = rs.getMetaData();
@@ -77,6 +77,9 @@ public class Database
 	      while(rs.next()) 
 	      {
 	        System.out.println(rs.getString(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
+	        result.add(rs.getString(1));
+	        result.add(rs.getString(2));
+	        result.add(rs.getString(3));
 	      }
 	      
 	      con.close();  
@@ -87,9 +90,10 @@ public class Database
 	    {
 	      // TODO Auto-generated catch block
 	      e.printStackTrace();
+	      return null;
 	    } 
 	  
-	return null;
+	return result;
   }
   
   public void executeDML(String dml) throws SQLException
@@ -102,7 +106,7 @@ public class Database
       stmt=con.createStatement();  
       
       //Execute a DML statement
-      //stmt.execute("insert into test1 values('Jim','1215 Main','5014503111')");
+      stmt.execute(dml);
   }
   
 }

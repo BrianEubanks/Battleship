@@ -39,24 +39,29 @@ public class BsServer extends AbstractServer {
 		System.out.println("Data type: "+arg0.getClass());
 		if(arg0 instanceof LoginData) 
 		{
-			System.out.println("Before validate player");
+			System.out.println("Before query");
 			//validate user
 			try {
-				userdb = new BSDatabaseServer("select * from user","Q");
+				userdb = new BSDatabaseServer("select * from user where username='"+((LoginData) arg0).getUsername()+"';","Q");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			//userdb.query("select * from user");
-//			if(userdb.validateUser(((LoginData) arg0).getUsername(),((LoginData) arg0).getPassword())) {
-//				System.out.println("Validate Player: "+((LoginData) arg0).getUsername());
-//				System.out.println(userdb.validateUser(((LoginData) arg0).getUsername(),((LoginData) arg0).getPassword()));
-//			}
-			//Before add player, they  must login 
-			((LoginData) arg0).setStatus(true);
-			System.out.println("Before add player");
-			((LoginData) arg0).setp1(bg.addPlayer(arg1));
-			System.out.println("After add player");
+			System.out.println("Before validate player");
+			//Validate User and Password
+			if(userdb.validateUser(((LoginData) arg0).getUsername(),((LoginData) arg0).getPassword())) {
+				System.out.println("Validate Player: "+((LoginData) arg0).getUsername());
+				System.out.println(userdb.validateUser(((LoginData) arg0).getUsername(),((LoginData) arg0).getPassword()));
+			
+				//Before add player, they  must login 
+				((LoginData) arg0).setStatus(true);
+				System.out.println("Before add player");
+				((LoginData) arg0).setp1(bg.addPlayer(arg1));
+				System.out.println("After add player");
+			}
+			else {
+				((LoginData) arg0).setStatus(false);
+			}
 			
 			try {
 				log.append("Client " + arg1.getId() + " " + arg0);
@@ -68,18 +73,32 @@ public class BsServer extends AbstractServer {
 			}
 		}
 		else if(arg0 instanceof CreateAccountData) {
-			if(validateCreateAccount((CreateAccountData)arg0)) {
-					//userdb.addUser(new User((int)arg1.getId(),((CreateAccountData) arg0).getUsername(), ((CreateAccountData)arg0).getPassword()));
+			
+			System.out.println("Before DML");
+			String dml = new String("insert into user values('"+arg1.getId()+"','"+((CreateAccountData) arg0).getUsername()+"','"+((CreateAccountData) arg0).getPassword()+"');");
+			//validate user
+			try {
+				userdb = new BSDatabaseServer(dml,"D");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 
-			}
-			else {
 				log.append("Client " + arg1.getId() + ": Create Account Error");
 				try {
-					arg1.sendToClient("Create Account Error");
+					((CreateAccountData) arg0).setStatus(false);
+					arg1.sendToClient(arg0);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+			log.append("Client " + arg1.getId() + ": Account added");
+			try {
+				((CreateAccountData) arg0).setStatus(true);
+				arg1.sendToClient(arg0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		else if (arg0 instanceof battleshipComm) {

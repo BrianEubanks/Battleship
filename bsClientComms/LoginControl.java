@@ -22,19 +22,20 @@ public class LoginControl {
 	public LoginControl() {}
 	
 	public void loginSubmit() {
-		larrydavid = new LoginData(usern.getText(),passw.getText());
-		System.out.println(client.isConnected());
-		//if(cs.validateAccount(larrydavid))
-		//{
-		//	System.out.println("Error duplicate Username");
-		//}
-		try {
-			client.sendToServer(larrydavid);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if((usern.getText().equals(""))||(passw.getText().equals(""))) {
+			System.out.println("Enter a username and password");
 		}
+		else {
+			larrydavid = new LoginData(usern.getText(),passw.getText());
+			System.out.println(client.isConnected());
 		
+			try {
+				client.sendToServer(larrydavid);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	

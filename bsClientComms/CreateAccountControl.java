@@ -23,17 +23,24 @@ public class CreateAccountControl {
 	
 	public void loginSubmit() {
 		
-		capData.setUsername(usern.getText());
-		capData.setPassword(passw.getText());
-		capData.setPasswordConf(passwconf.getText());
-		
-		try {
-			client.sendToServer(capData);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if((usern.getText().equals(""))||(passw.getText().equals(""))||(passwconf.getText().equals(""))) {
+			System.out.println("Enter a username and password");
 		}
+		else if(!(passw.getText().equals(passwconf.getText()))) {
+			System.out.println("Passwords Must Match");
+		}
+		else {
+			capData.setUsername(usern.getText());
+			capData.setPassword(passw.getText());
+			capData.setPasswordConf(passwconf.getText());
 		
+			try {
+				client.sendToServer(capData);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	
