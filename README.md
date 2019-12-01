@@ -18,25 +18,25 @@ Creates a 'user' table with 'id', 'username', and 'password' fields.
 
 ### Starting the Server
 
-On Windows, use the [bsServerWIN.bat]() file to start the Server.
+On Windows, use the bsServerWIN.bat file to start the Server.
 
 ```bash
 bsServerWIN.bat
 ```
-On OSX, use the [bsServer.sh]() file to start the Server.
+On OSX, use the bsServer.sh file to start the Server.
 
 ```bash
 ./bsServer
 ```
 ### Starting the Clients
 
-On Windows, use the [bsClientWIN.bat]() file to start the program.
+On Windows, use the bsClientWIN.bat file to start the program.
 
 ```bash
 bsClientWIN.bat
 ```
 
-On Windows, use the [bsClient.sh]() file to start the program.
+On Windows, use the bsClient.sh file to start the program.
 
 ```bash
 bsClientWIN.bat
@@ -59,8 +59,11 @@ Once a client is connected, the user may choose to create an account, or login. 
 The players begin by placing 4 ships. The BOTTOM half of the screen represents their own board. The ships are placed in the following order. Left clicking places a ship horizontally, right clicking places a ship vertically
 
 Ship 1: Length 2
+
 Ship 2: Length 3
+
 Ship 3: Length 3
+
 Ship 4: Length 4
 
 Once both players have placed all of their ships, the game play begins.
