@@ -64,7 +64,7 @@ public class BattleshipGame {
 		System.out.println(pg);
 		System.out.println(pg.getClass());
 		if(pg.placeShips) {
-			pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex(),arg0.getp1BoardClick());
+			pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex(),arg0.getp1BoardClick(),arg0.getrightclick());
 		}
 		else {
 			pg.turn(arg0.getp1Turn(), arg0.getboardIndex(), arg0.getp1BoardClick());

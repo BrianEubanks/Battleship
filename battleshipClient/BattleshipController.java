@@ -2,16 +2,19 @@ package battleshipClient;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 import battleshipServer.battleshipComm;
 
 
-public class BattleshipController implements ActionListener{
+public class BattleshipController implements ActionListener, MouseListener{
 
 	private BattleshipData bsdata;
 	private BattleshipView bsview;
@@ -61,12 +64,51 @@ public class BattleshipController implements ActionListener{
 	    {
 	       opponent[i].addActionListener(this);
 	       player[i].addActionListener(this);
+	       opponent[i].addMouseListener(this);
+	       player[i].addMouseListener(this);
 	    }
 		
 	}
 	
 	public void setBattleshipData(BattleshipData bsdata) {
 		this.bsdata = bsdata;
+	}
+	
+	public void mouseClicked(MouseEvent me) {
+		if(SwingUtilities.isLeftMouseButton(me)) {	
+			bsdata.setrightclick(false);
+			System.out.println("Left Button");
+		}
+		else if(SwingUtilities.isRightMouseButton(me)) {
+			bsdata.setrightclick(true);
+			System.out.println("Right Button");
+		}
+		Object source = me.getSource();
+		for (int i = 0; i < opponent.length; i++)
+	    {
+	       if (source == opponent[i]) {
+	    	   //System.out.println("Opponent: "+ i + " "+ opponentData[i]);
+	    	   msgText.setText("Opponent: "+ i + " "+ opponentData[i]);
+//	    	   opponent[i].setIcon(water);
+	    	   bsdata.setboardIndex(i);
+	    	   bsdata.setp1BoardClick(false);
+	    	   bsdata.setMessage(msgText.getText());
+	       }
+	    }
+		
+		for (int i = 0; i < player.length; i++)
+	    {
+	       if (source == player[i]) {
+	    	   //System.out.println("Player: "+ i + " "+ playerData[i]);
+	    	   msgText.setText("Player: "+ i + " "+ playerData[i]);
+	    	  // player[i].setIcon(bshiphit);
+	    	   bsdata.setboardIndex(i);
+	    	   bsdata.setp1BoardClick(true);
+	    	   bsdata.setp1(p1);
+	    	   bsdata.setMessage(msgText.getText());
+	       }
+	    }
+		bsdata.sendToServer();
 	}
 	
 	public void actionPerformed(ActionEvent ae) {
@@ -100,31 +142,31 @@ public class BattleshipController implements ActionListener{
 //	    }
 		
 		//This code sets the data value to send to server
-		for (int i = 0; i < opponent.length; i++)
-	    {
-	       if (source == opponent[i]) {
-	    	   //System.out.println("Opponent: "+ i + " "+ opponentData[i]);
-	    	   msgText.setText("Opponent: "+ i + " "+ opponentData[i]);
-//	    	   opponent[i].setIcon(water);
-	    	   bsdata.setboardIndex(i);
-	    	   bsdata.setp1BoardClick(false);
-	    	   bsdata.setMessage(msgText.getText());
-	       }
-	    }
-		
-		for (int i = 0; i < player.length; i++)
-	    {
-	       if (source == player[i]) {
-	    	   //System.out.println("Player: "+ i + " "+ playerData[i]);
-	    	   msgText.setText("Player: "+ i + " "+ playerData[i]);
-	    	  // player[i].setIcon(bshiphit);
-	    	   bsdata.setboardIndex(i);
-	    	   bsdata.setp1BoardClick(true);
-	    	   bsdata.setp1(p1);
-	    	   bsdata.setMessage(msgText.getText());
-	       }
-	    }
-		bsdata.sendToServer();
+//		for (int i = 0; i < opponent.length; i++)
+//	    {
+//	       if (source == opponent[i]) {
+//	    	   //System.out.println("Opponent: "+ i + " "+ opponentData[i]);
+//	    	   msgText.setText("Opponent: "+ i + " "+ opponentData[i]);
+////	    	   opponent[i].setIcon(water);
+//	    	   bsdata.setboardIndex(i);
+//	    	   bsdata.setp1BoardClick(false);
+//	    	   bsdata.setMessage(msgText.getText());
+//	       }
+//	    }
+//		
+//		for (int i = 0; i < player.length; i++)
+//	    {
+//	       if (source == player[i]) {
+//	    	   //System.out.println("Player: "+ i + " "+ playerData[i]);
+//	    	   msgText.setText("Player: "+ i + " "+ playerData[i]);
+//	    	  // player[i].setIcon(bshiphit);
+//	    	   bsdata.setboardIndex(i);
+//	    	   bsdata.setp1BoardClick(true);
+//	    	   bsdata.setp1(p1);
+//	    	   bsdata.setMessage(msgText.getText());
+//	       }
+//	    }
+//		bsdata.sendToServer();
 	
 	}
 	
@@ -142,7 +184,7 @@ public class BattleshipController implements ActionListener{
 			msgText.setText(bscomm.getMessage());
 		}
 		else {
-		//if (bscomm.getValidMove()) {
+		if (bscomm.getValidMove()) {
 			if (p1) {
 				if (bscomm.getp1BoardClick()) {
 					switch (sprite){
@@ -155,10 +197,19 @@ public class BattleshipController implements ActionListener{
 						//change to ship
 						int y=0;
 						newSprite=bship;
-						while(y<shipData[sprite]) {
-							
-							player[i+y].setIcon(newSprite);
-							y++;
+						if(!bscomm.getrightclick()) {
+							while(y<shipData[sprite]) {
+								
+								player[i+y].setIcon(newSprite);
+								y++;
+							}
+						}
+						else if(bscomm.getrightclick()) {
+							while(y<shipData[sprite]) {
+								
+								player[i+(y*10)].setIcon(newSprite);
+								y++;
+							}							
 						}
 						msgText.setText(bscomm.getMessage());
 						System.out.println(sprite);
@@ -208,10 +259,21 @@ public class BattleshipController implements ActionListener{
 						
 						int y=0;
 						newSprite=bship;
-						while(y<shipData[sprite]) {
-							opponent[i+y].setIcon(newSprite);
-							y++;
+						if(!bscomm.getrightclick()) {
+							while(y<shipData[sprite]) {
+								
+								opponent[i+y].setIcon(newSprite);
+								y++;
+							}
 						}
+						else if(bscomm.getrightclick()) {
+							while(y<shipData[sprite]) {
+								
+								opponent[i+(y*10)].setIcon(newSprite);
+								y++;
+							}							
+						}
+
 						msgText.setText(bscomm.getMessage());
 						//decrement ship no
 						//messageToPlayer = new String("There is already a ship here!");
@@ -265,9 +327,19 @@ public class BattleshipController implements ActionListener{
 						//change to ship
 						int y=0;
 						newSprite=bship;
-						while(y<shipData[sprite]) {	
-							player[i+y].setIcon(newSprite);
-							y++;
+						if(!bscomm.getrightclick()) {
+							while(y<shipData[sprite]) {
+								
+								player[i+y].setIcon(newSprite);
+								y++;
+							}
+						}
+						else if(bscomm.getrightclick()) {
+							while(y<shipData[sprite]) {
+								
+								player[i+(y*10)].setIcon(newSprite);
+								y++;
+							}							
 						}
 						msgText.setText(bscomm.getMessage());
 						//decrement ship no
@@ -320,10 +392,21 @@ public class BattleshipController implements ActionListener{
 						//change to ship
 						int y=0;
 						newSprite=bship;
-						while(y<shipData[sprite]) {
-							opponent[i+y].setIcon(newSprite);
-							y++;
+						if(!bscomm.getrightclick()) {
+							while(y<shipData[sprite]) {
+								
+								opponent[i+y].setIcon(newSprite);
+								y++;
+							}
 						}
+						else if(bscomm.getrightclick()) {
+							while(y<shipData[sprite]) {
+								
+								opponent[i+(y*10)].setIcon(newSprite);
+								y++;
+							}							
+						}
+
 						msgText.setText(bscomm.getMessage());
 						//decrement ship no
 						//messageToPlayer = new String("There is already a ship here!");
@@ -366,12 +449,13 @@ public class BattleshipController implements ActionListener{
 				}
 			}
 		}
-		//}
-		//else {
-		//	msgText.setText("Invalid Move: " + bscomm.getMessage());
-		//}
 		
+
+		else {
+			msgText.setText("Invalid Move: " + bscomm.getMessage());
+		}
 		
+		}
 		
 		
 		//update data and screen with comm object
@@ -387,6 +471,30 @@ public class BattleshipController implements ActionListener{
 	}
 	public boolean getp1() {
 		return p1;
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -16,6 +16,7 @@ public class battleshipComm  implements Serializable {
 	private boolean placeShips;
 	private boolean p1Turn;
 	private boolean p1BoardClick;
+	private boolean rightClick;
 	private int shipLength;
 	
 	
@@ -24,7 +25,6 @@ public class battleshipComm  implements Serializable {
 	
 	public battleshipComm(int boardIndex) {
 		this.boardIndex = boardIndex;
-		shipLength=0;
 	}
 	
 	//setters
@@ -57,6 +57,9 @@ public class battleshipComm  implements Serializable {
 	}
 	public void setShipLength(int s) {
 		this.shipLength=s;
+	}
+	public void setrightClick(boolean rc) {
+		this.rightClick=rc;
 	}
 	
 	// Getters
@@ -92,6 +95,10 @@ public class battleshipComm  implements Serializable {
 	public int getShipLength() {
 		return shipLength;
 	}
+	public boolean getrightclick() {
+		return rightClick;
+	}
+
 
 }
 	

@@ -107,41 +107,83 @@ public class playGame {
 
 	// Add Check to rotate ships vertical?
 	
-	public boolean addShipToP1Board(int boardIndex) {
+	public boolean addShipToP1Board(int boardIndex,boolean rightclick) {
 		int index = 0;
 		int checkIndex = 0;
 		int shipDataPoints = p1shipData[p1shipCount];
+		System.out.println("Right Click? "+rightclick);
 		
-		//check for wrapping at end of line
-		if((boardIndex%10)+shipDataPoints>9) {
+		if(!placeShipsp1) {
+			messageToPlayer = new String("All of your ships are placed, waiting on Player 2");
 			return false;
+			
 		}
-		
-		//check for overlap before adding ship
-		while (checkIndex < shipDataPoints) {
-			if(p1boardData[boardIndex+checkIndex]!=6){
-				//if any data point is not water, there is an overlap with another ship
+		//Left Click, add Horizontal ship
+		if(!rightclick) {
+			//check for wrapping at end of line
+			if((boardIndex%10)+shipDataPoints>9) {
+				messageToPlayer = new String("Can't add a ship here, Player 1");
+
 				return false;
 			}
-			checkIndex++;
+			
+			//check for overlap before adding ship
+			while (checkIndex < shipDataPoints) {
+				if(p1boardData[boardIndex+checkIndex]!=6){
+					//if any data point is not water, there is an overlap with another ship
+					messageToPlayer = new String("Can't add a ship here, Player 1");
+					return false;
+				}
+				checkIndex++;
+			}
+			// add the ship to the boardData
+			while (index < shipDataPoints) {
+				//p1boardData[boardIndex+index]=p1shipData[p1shipCount];
+				p1boardData[boardIndex+index]=p1shipCount;
+				index++;
+			}
 		}
-		// add the ship to the boardData
-		while (index < shipDataPoints) {
-			//p1boardData[boardIndex+index]=p1shipData[p1shipCount];
-			p1boardData[boardIndex+index]=p1shipCount;
-			index++;
+		//right click, add vertical ship
+		else if(rightclick) {
+			//check for wrapping at end of line
+			if(boardIndex+(shipDataPoints*10)>99) {
+				messageToPlayer = new String("Can't add a ship here, Player 1");
+
+				return false;
+			}
+			
+			//check for overlap before adding ship
+			while (checkIndex < shipDataPoints) {
+				if(p1boardData[boardIndex+(checkIndex*10)]!=6){
+					//if any data point is not water, there is an overlap with another ship
+					messageToPlayer = new String("Can't add a ship here, Player 1");
+					return false;
+				}
+				checkIndex++;
+			}
+			// add the ship to the boardData
+			while (index < shipDataPoints) {
+				//p1boardData[boardIndex+index]=p1shipData[p1shipCount];
+				p1boardData[boardIndex+(index*10)]=p1shipCount;
+				index++;
+			}	
 		}
+		
 		System.out.println("P1ShipData & Count: "+p1shipData[p1shipCount]+" "+p1shipCount);
 		System.out.println("P1BoardData"+p1boardData[boardIndex]);
 		
 		p1shipCount++;
+		messageToPlayer = new String("Player 1: Place "+(4-p1shipCount)+" more ships.");
 		if(p1shipCount>3) {
 			placeShipsp1 = false;
+			messageToPlayer = new String("PLAYER 1 SHIPS DONE, waiting on player 2");
 			System.out.println("PLAYER 1 SHIPS DONE");
 		}
 		if((!placeShipsp1) && (!placeShipsp2)) {
 			placeShips = false;
 			p1Turn = true;
+			messageToPlayer = new String("DONE placing ships! Your move player 1");
+			System.out.println("PLAYER 1 SHIPS DONE");
 			//validMove=false;
 		}
 		
@@ -149,49 +191,88 @@ public class playGame {
 		return true;
 	}
 	
-	public boolean addShipToP2Board(int boardIndex) {
+	public boolean addShipToP2Board(int boardIndex,boolean rightclick) {
 		int index = 0;
 		int checkIndex = 0;
 		int shipDataPoints = p2shipData[p2shipCount];
 		System.out.println("ShipDataPoints: "+shipDataPoints);
+		System.out.println("Right Click? "+rightclick);
 		
-		//check for wrapping at end of line
-		if((boardIndex%10)+shipDataPoints>9) {
+		if(!placeShipsp2) {
+			messageToPlayer = new String("All of your ships are placed, waiting on Player 1");
 			return false;
 		}
 		
-		//check for overlap before adding ship
-		while (checkIndex < shipDataPoints) {
-			if(p2boardData[boardIndex+checkIndex]!=6){
-				//if any data point is not water, there is an overlap with another ship
+		if(!rightclick) {
+			//check for wrapping at end of line
+			if((boardIndex%10)+shipDataPoints>9) {
+				messageToPlayer = new String("Can't add a ship here, Player 2");
+
 				return false;
 			}
-			checkIndex++;
+			
+			//check for overlap before adding ship
+			while (checkIndex < shipDataPoints) {
+				if(p2boardData[boardIndex+checkIndex]!=6){
+					//if any data point is not water, there is an overlap with another ship
+					messageToPlayer = new String("Can't add a ship here, Player 2");
+					return false;
+				}
+				checkIndex++;
+			}
+			// add the ship to the boardData
+			while (index < shipDataPoints) {
+				//p2boardData[boardIndex+index]=p2shipData[p2shipCount];
+				p2boardData[boardIndex+index]=p2shipCount;
+				System.out.println(p2boardData[boardIndex+index]);
+				index++;
+			}
 		}
-		// add the ship to the boardData
-		while (index < shipDataPoints) {
-			//p2boardData[boardIndex+index]=p2shipData[p2shipCount];
-			p2boardData[boardIndex+index]=p2shipCount;
-			System.out.println(p2boardData[boardIndex+index]);
-			index++;
+		else if(rightclick) {
+			//check for wrapping at end of line
+			if(boardIndex+(shipDataPoints*10)>99) {
+				messageToPlayer = new String("Can't add a ship here, Player 2");
+
+				return false;
+			}
+			
+			//check for overlap before adding ship
+			while (checkIndex < shipDataPoints) {
+				if(p2boardData[boardIndex+(checkIndex*10)]!=6){
+					//if any data point is not water, there is an overlap with another ship
+					messageToPlayer = new String("Can't add a ship here, Player 2");
+					return false;
+				}
+				checkIndex++;
+			}
+			// add the ship to the boardData
+			while (index < shipDataPoints) {
+				//p2boardData[boardIndex+index]=p2shipData[p2shipCount];
+				p2boardData[boardIndex+(index*10)]=p2shipCount;
+				System.out.println(p2boardData[boardIndex+index]);
+				index++;
+			}
 		}
-		
+
 		p2shipCount++;
+		messageToPlayer = new String("Player 2: Place "+(4-p2shipCount)+" more ships.");
 		
 		if(p2shipCount>3) {
 			placeShipsp2 = false;
+			messageToPlayer = new String("PLAYER 2 SHIPS DONE, waiting on player 1");
 			System.out.println("PLAYER 2 SHIPS DONE");
 		}
 		if((!placeShipsp1) && (!placeShipsp2))  {
 			placeShips = false;
 			p1Turn = true;
+			messageToPlayer = new String("DONE placing ships! Your move player 1");
 			//validMove=false;
 		}
 		
 		return true;
 	}
 	
-	public void placeShips(boolean player1, int boardIndex, boolean boardClick) {
+	public void placeShips(boolean player1, int boardIndex, boolean boardClick,boolean rightclick) {
 		System.out.println("Player1 placeShips: "+ p1Turn+" --------------------------");
 		System.out.println("Data Comms Received:");
 		System.out.println("player1: "+player1);
@@ -202,7 +283,14 @@ public class playGame {
 		if (player1 != boardClick) {
 			// its not your turn!!
 			// send back to client
-			messageToPlayer = new String("Place Ships on your own board!!! Player1: "+player1);
+			if(player1) {
+				messageToPlayer = new String("Player 1! Place Ships on your own board!!!");
+			
+			}
+			else {
+				messageToPlayer = new String("Player 2! Place Ships on your own board!!!");
+				
+			}
 			validMove=false;
 			
 			System.out.println(messageToPlayer);
@@ -233,9 +321,9 @@ public class playGame {
 			case 6:
 				//water
 				//Place a ship here********************************************
-				messageToPlayer = new String("AddShipToP1Board");
+				//messageToPlayer = new String("AddShipToP1Board");
 				//p1boardData[boardIndex]=7;
-				validMove = addShipToP1Board(boardIndex);
+				validMove = addShipToP1Board(boardIndex, rightclick);
 				System.out.println(messageToPlayer+" "+validMove);
 				break;
 			case 7:
@@ -277,9 +365,9 @@ public class playGame {
 			case 6:
 				//water
 				//Place a ship here********************************************
-				messageToPlayer = new String("AddShiptoP2Board");
+				//messageToPlayer = new String("AddShiptoP2Board");
 				//p1boardData[boardIndex]=7;
-				validMove = addShipToP2Board(boardIndex);
+				validMove = addShipToP2Board(boardIndex, rightclick);
 				System.out.println(messageToPlayer+" "+validMove);
 				break;
 			case 7:
@@ -313,6 +401,7 @@ public class playGame {
 		bsc.setp1Turn(p1Turn);
 		bsc.setValidMove(validMove);
 		bsc.setp1BoardClick(boardClick);
+		bsc.setrightClick(rightclick);
 		System.out.println(validMove+" " + messageToPlayer+" "+bsc.getDataValue()+" "+ boardIndex);
 		System.out.println("P1 Ship Data: "+p1shipData[p1shipCount]+" "+p1shipCount);
 		System.out.println("P2 Ship Data: "+p2shipData[p2shipCount]+" "+p2shipCount);
