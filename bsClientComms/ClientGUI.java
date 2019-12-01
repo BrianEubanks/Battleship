@@ -143,6 +143,7 @@ public class ClientGUI extends JFrame
 		      if (e.getSource() == connect) {
 		        System.out.println("Connect Button Pressed");
 		        try {
+		        	client.setHost(textFields[1].getText());
 					client.openConnection();
 					
 				} catch (IOException e1) {
