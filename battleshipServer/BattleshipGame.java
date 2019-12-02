@@ -58,28 +58,62 @@ public class BattleshipGame {
 		//else {
 		//	pg.turn(arg0.getp1Turn(), arg0.getboardIndex());
 		//}
-		
-		//update bsc
-		//pg = new playGame();
-		System.out.println(pg);
-		System.out.println(pg.getClass());
-		if(pg.placeShips) {
-			pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex(),arg0.getp1BoardClick(),arg0.getrightclick());
+		if(arg0.getNewGame()) {
+			pg = new playGame();
+		}
+		if(playerOneID==0) {
+			arg0.setValidMove(false);
+			arg0.setMessage("Wait for Player 1");
+			try {
+				playerTwo.sendToClient(arg0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(playerTwoID==0) {
+			arg0.setValidMove(false);
+			arg0.setMessage("Wait for Player 2");
+			try {
+				playerOne.sendToClient(arg0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if(arg0.getGameOver()) {
+			pg.forfeitGame(arg0);
+			try {
+				playerOne.sendToClient(pg.getComms());
+				playerTwo.sendToClient(pg.getComms());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		else {
-			pg.turn(arg0.getp1Turn(), arg0.getboardIndex(), arg0.getp1BoardClick());
+			//update bsc
+			//pg = new playGame();
+			//System.out.println(pg);
+			//System.out.println(pg.getClass());
+			if(pg.placeShips) {
+				pg.placeShips(arg0.getp1Turn(), arg0.getboardIndex(),arg0.getp1BoardClick(),arg0.getrightclick());
+			}
+			else {
+				pg.turn(arg0.getp1Turn(), arg0.getboardIndex(), arg0.getp1BoardClick());
+			}
+			//send to server new bsc with updated values
+			System.out.println("Send battleshipcomm to client: "+ arg0.getClass());
+			
+			try {
+				playerOne.sendToClient(pg.getComms());
+				playerTwo.sendToClient(pg.getComms());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		//send to server new bsc with updated values
-		System.out.println("Send battleshipcomm to client: "+ arg0.getClass());
-		
-		try {
-			playerOne.sendToClient(pg.getComms());
-			playerTwo.sendToClient(pg.getComms());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		
 		//return pg.getComms();
 	}

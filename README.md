@@ -5,18 +5,6 @@ Austin Ahne, Kevin Camp, Brian Eubanks, Job McCully, Josh McIlvoy
 
 ## Setup
 
-### Starting the SQL Server
-
-Make sure the SQL server is started.
-On Windows...
-
-```bash
-C:\xampp\mysql_start.bat
-```
-
-
-The Following files can be used to setup the database table if not already setup.
-
 ### bsDBUser.sql
 
 Creates a 'student' user.

@@ -20,6 +20,7 @@ public class BattleshipData {
 	private boolean gameOver;
 	private boolean p1;
 	private boolean rightclick;
+	private boolean newGame;
 	
 	
 	private battleshipComm bsc;
@@ -55,6 +56,13 @@ public class BattleshipData {
 		this.rightclick = rc;
 	}
 	
+	public void setNewGame(boolean ng) {
+		this.newGame = ng;
+	}
+	
+	public BsClient getClient() {
+		return bsclient;
+	}
 	public void sendToServer()  {
 		System.out.println(message);
 		System.out.println("Send To Server "+boardIndex+" "+boardDataValue);
@@ -65,7 +73,9 @@ public class BattleshipData {
 		bsc.setMessage(message);
 		bsc.setp1BoardClick(p1BoardClick);
 		bsc.setp1Turn(p1);
+		bsc.setp1(p1);
 		bsc.setrightClick(rightclick);
+		bsc.setGameOver(gameOver);
 		try {
 			bsclient.sendToServer(bsc);
 		} catch (IOException e) {

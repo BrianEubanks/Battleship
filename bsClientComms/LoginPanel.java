@@ -16,7 +16,7 @@ public class LoginPanel extends JFrame{
 	private JLabel uname;
 	private JLabel pword;
 	private JTextField usern;
-	private JTextField passw;
+	private JPasswordField passw;
 	private JButton submit;
 	private JButton cancel;
 	private BsClient client;
@@ -27,7 +27,8 @@ public class LoginPanel extends JFrame{
 		this.setTitle(title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		usern = new JTextField();
-		passw = new JTextField();
+		passw = new JPasswordField();
+		passw.setEchoChar('*');
 		lControl=new LoginControl();
 		lControl.setLP(this);
 		lControl.setUN(usern);

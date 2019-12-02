@@ -57,7 +57,7 @@ public class BsServer extends AbstractServer {
 				((LoginData) arg0).setStatus(true);
 				System.out.println("Before add player");
 				((LoginData) arg0).setp1(bg.addPlayer(arg1));
-				System.out.println("After add player");
+				System.out.println("After add player: P1: "+((LoginData) arg0).getp1());
 			}
 			else {
 				((LoginData) arg0).setStatus(false);

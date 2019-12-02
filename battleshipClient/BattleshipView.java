@@ -33,6 +33,9 @@ public class BattleshipView extends JFrame{
 	private ImageIcon watermiss;
 	private ImageIcon bshiphit;
 	
+	private JButton btnForfeit;
+	private JButton btnQuit;
+	
 	private JLabel msgText;
 	
 	protected JButton[] getOpponentButton() {
@@ -40,6 +43,12 @@ public class BattleshipView extends JFrame{
 	}
 	protected JButton[] getPlayerButton() {
 		return player;
+	}
+	protected JButton getForfeitButton() {
+		return btnForfeit;
+	}
+	protected JButton getQuitButton() {
+		return btnQuit;
 	}
 	protected int[] getOpponentData() {
 		return opponentData;
@@ -117,9 +126,9 @@ public class BattleshipView extends JFrame{
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		//Add Buttons to Menu Panel
-		JButton btnNewButton = new JButton("Forfeit");
-		panel.add(btnNewButton);
-		JButton btnQuit = new JButton("Quit");
+		btnForfeit = new JButton("Forfeit");
+		panel.add(btnForfeit);
+		btnQuit = new JButton("Quit");
 		panel.add(btnQuit);
 		
 		

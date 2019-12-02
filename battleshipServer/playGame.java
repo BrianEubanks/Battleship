@@ -399,6 +399,7 @@ public class playGame {
 		
 		bsc.setMessage(messageToPlayer);
 		bsc.setp1Turn(p1Turn);
+		bsc.setp1(player1);
 		bsc.setValidMove(validMove);
 		bsc.setp1BoardClick(boardClick);
 		bsc.setrightClick(rightclick);
@@ -428,7 +429,7 @@ public class playGame {
 			System.out.println(p2shipCount);
 			if(p2shipCount==0) {
 				p1Turn=true;
-				endGame();
+				endGame(new battleshipComm(0));
 			}
 			
 		}
@@ -444,7 +445,7 @@ public class playGame {
 			}
 			if(p1shipCount==0) {
 				p1Turn=false;
-				endGame();
+				endGame(new battleshipComm(0));
 			}
 		}
 	}
@@ -467,14 +468,27 @@ public class playGame {
 		else if (player1 != p1Turn) {
 			// its not your turn!!
 			// send back to client
-			messageToPlayer = new String("It's Not Your Turn!!! Player1: "+player1);
+			if(player1) {
+				messageToPlayer = new String("Player 1, It's Not Your Turn!!!");
+			}
+			else {
+				messageToPlayer = new String("Player 2, It's Not Your Turn!!!");
+			}
+			
 			validMove=false;
 			System.out.println(messageToPlayer);
 		}
 		else if (player1 == boardClick) {
 			// its not your turn!!
 			// send back to client
-			messageToPlayer = new String("Don't Shoot your own ships!!! Player1: "+player1);
+			if(player1) {
+				messageToPlayer = new String("Player 1, Don't Shoot your own ships!!!");
+
+			}
+			else {
+				messageToPlayer = new String("Player 2, Don't Shoot your own ships!!!");
+
+			}
 			validMove=false;
 			System.out.println(messageToPlayer);
 		}
@@ -490,7 +504,7 @@ public class playGame {
 				//ship
 				//change to shiphit
 				//decrement ship no
-				messageToPlayer = new String("HIT!!! Player1: "+player1);
+				messageToPlayer = new String("HIT!!!");
 				p1shipData[p1boardData[boardIndex]]--;
 				checkShips(player1,p1boardData[boardIndex],p1shipData[p1boardData[boardIndex]]);
 				p1boardData[boardIndex]=5;
@@ -500,13 +514,13 @@ public class playGame {
 			case 5:
 				//already hit here
 				//does not change turn
-				messageToPlayer = new String("You've Already Shot Here. Player1: "+player1);
+				messageToPlayer = new String("You've Already Shot Here.");
 				validMove=false;
 				break;
 			case 6:
 				//water
 				//change to miss
-				messageToPlayer = new String("MISS!!! Player1: "+player1);
+				messageToPlayer = new String("MISS!!!");
 				p1boardData[boardIndex]=7;
 				p1Turn = true;
 				validMove=true;
@@ -515,7 +529,7 @@ public class playGame {
 				//watermiss
 				//already missed here
 				//does not change turn
-				messageToPlayer = new String("You've Already Missed Here. Player1: "+player1);
+				messageToPlayer = new String("You've Already Missed Here.");
 				validMove=false;
 				break;
 			default:
@@ -539,7 +553,7 @@ public class playGame {
 				//ship
 				//change to shiphit
 				//decrement ship no
-				messageToPlayer = new String("HIT!!! Player1: "+player1);
+				messageToPlayer = new String("HIT!!!");
 				System.out.println(messageToPlayer);
 				System.out.println("BoardData: "+p2boardData[boardIndex]);
 				System.out.println("ShipNo: "+p2boardData[boardIndex]);
@@ -554,13 +568,13 @@ public class playGame {
 			case 5:
 				//already hit here
 				//does not change turn
-				messageToPlayer = new String("You've Already Shot Here. Player1: "+player1);
+				messageToPlayer = new String("You've Already Shot Here.");
 				validMove=false;
 				break;
 			case 6:
 				//water
 				//change to miss
-				messageToPlayer = new String("MISS!!! Player1: "+player1);
+				messageToPlayer = new String("MISS!!!");
 				p2boardData[boardIndex]=7;
 				p1Turn=false;
 				validMove=true;
@@ -569,7 +583,7 @@ public class playGame {
 				//watermiss
 				//already missed here
 				//does not change turn
-				messageToPlayer = new String("You've Already Missed Here. Player1: "+player1);
+				messageToPlayer = new String("You've Already Missed Here.");
 				validMove=false;
 				break;
 			default:
@@ -590,6 +604,7 @@ public class playGame {
 		}
 		bsc.setMessage(messageToPlayer);
 		bsc.setp1Turn(p1Turn);
+		bsc.setp1(player1);
 		bsc.setValidMove(validMove);
 		bsc.setp1BoardClick(boardClick);
 		System.out.println(messageToPlayer);
@@ -601,9 +616,22 @@ public class playGame {
 	
 	
 	//End Game
-	public void endGame() {
-		bsc = new battleshipComm(0);
+	public void endGame(battleshipComm bsc) {
+		this.bsc = bsc;
 		if(p1Turn) {
+			messageToPlayer = new String("Player1 Wins!!! ");
+		}
+		else {
+			messageToPlayer = new String("Player2 Wins!!! ");
+		}
+		bsc.setMessage(messageToPlayer);
+		bsc.setp1Turn(p1Turn);
+		bsc.setGameOver(true);
+		System.out.println(messageToPlayer);
+	}
+	public void forfeitGame(battleshipComm bsc) {
+		this.bsc = bsc;
+		if(!bsc.getp1Turn()) {
 			messageToPlayer = new String("Player1 Wins!!! ");
 		}
 		else {

@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -27,8 +28,8 @@ public class CreateAccountPanel extends JFrame {
 	private JLabel pword;
 	private JLabel pwordconf;
 	private JTextField usern;
-	private JTextField passw;
-	private JTextField passwconf;
+	private JPasswordField passw;
+	private JPasswordField passwconf;
 	private JButton submit;
 	private JButton cancel;
 	private BsClient client;
@@ -40,8 +41,10 @@ public class CreateAccountPanel extends JFrame {
 		this.setTitle(title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		usern = new JTextField();
-		passw = new JTextField();
-		passwconf = new JTextField();
+		passw = new JPasswordField();
+		passwconf = new JPasswordField();
+		passw.setEchoChar('*');
+		passwconf.setEchoChar('*');
 		caControl= new CreateAccountControl(usern,passw,passwconf);
 		caControl.setCAP(this);
 		caControl.setUN(usern);

@@ -24,6 +24,8 @@ public class BattleshipController implements ActionListener, MouseListener{
 	
 	private JButton[] opponent;
 	private JButton[] player;
+	private JButton btnForfeit;
+	private JButton btnQuit;
 	private int[] opponentData;
 	private int[] playerData;
 	
@@ -49,6 +51,8 @@ public class BattleshipController implements ActionListener, MouseListener{
 		msgText = bsview.getMessage();
 		opponent = bsview.getOpponentButton();
 		player = bsview.getPlayerButton();
+		btnForfeit = bsview.getForfeitButton();
+		btnQuit = bsview.getQuitButton();
 		opponentData = bsview.getOpponentData();
 		playerData = bsview.getPlayerData();
 		water = bsview.getwaterIcon();
@@ -69,7 +73,11 @@ public class BattleshipController implements ActionListener, MouseListener{
 	       opponent[i].addMouseListener(this);
 	       player[i].addMouseListener(this);
 	    }
-		JOptionPane.showMessageDialog(new JFrame(), "Place Your Ships on the bottom half!");
+	    
+	    btnForfeit.addActionListener(this);
+	    btnQuit.addActionListener(this);
+	    
+		JOptionPane.showMessageDialog(new JFrame(), "Place Your Ships on the bottom half! Left Click, Horizontal. Right Click, Vertical");
 
 		
 	}
@@ -96,6 +104,7 @@ public class BattleshipController implements ActionListener, MouseListener{
 //	    	   opponent[i].setIcon(water);
 	    	   bsdata.setboardIndex(i);
 	    	   bsdata.setp1BoardClick(false);
+	    	   bsdata.setp1(p1);
 	    	   bsdata.setMessage(msgText.getText());
 	       }
 	    }
@@ -119,6 +128,26 @@ public class BattleshipController implements ActionListener, MouseListener{
 		
 		Object source = ae.getSource();
 		
+		if(source == btnQuit) {
+			JOptionPane.showMessageDialog(new JFrame(), "Quit");
+			bsdata.setgameOver(true);
+			bsdata.sendToServer();
+			bsview.dispose();
+			try {
+				bsdata.getClient().closeConnection();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+		}
+		if(source == btnForfeit) {
+			JOptionPane.showMessageDialog(new JFrame(), "Forfeit");
+			bsdata.setgameOver(true);
+			bsdata.sendToServer();
+			//bsview.dispose();
+		}
 		
 		//This code changes the icon of whatever square was clicked
 //		for (int i = 0; i < opponent.length; i++)
@@ -177,8 +206,10 @@ public class BattleshipController implements ActionListener, MouseListener{
 	public void receiveDataFromServer(battleshipComm bscomm) {
 		this.bscomm = bscomm;
 		System.out.println("Data from Server");
-		System.out.println("Player 1: "+p1);
+		System.out.println("Client Player 1: "+p1);
 		System.out.println("P1 Board Click: "+bscomm.getp1BoardClick());
+		System.out.println("P1 Turn: "+bscomm.getp1Turn());
+		System.out.println("P1: "+bscomm.getp1());
 		int i = bscomm.getboardIndex();
 		int sprite = bscomm.getDataValue();
 		System.out.println("Sprite value: "+sprite);
@@ -186,8 +217,18 @@ public class BattleshipController implements ActionListener, MouseListener{
 		if(bscomm.getGameOver()) {
 			System.out.println(bscomm.getMessage());
 			msgText.setText(bscomm.getMessage());
-			JOptionPane.showMessageDialog(new JFrame(), bscomm.getMessage());
-
+			//JOptionPane.showOptionDialog(new JFrame(), bscomm.getMessage());
+			 int choice = JOptionPane.showOptionDialog(null, 
+				      bscomm.getMessage()+" Want to play Again?", 
+				      "Quit?", 
+				      JOptionPane.YES_NO_OPTION, 
+				      JOptionPane.QUESTION_MESSAGE, 
+				      null, null, null);
+			 if (choice == JOptionPane.YES_OPTION) {
+				 bsdata.setNewGame(true);
+				 bsdata.setgameOver(false);
+				 bsdata.sendToServer();
+			 }
 		}
 		else {
 		if (bscomm.getValidMove()) {
@@ -458,9 +499,15 @@ public class BattleshipController implements ActionListener, MouseListener{
 		
 
 		else {
-			msgText.setText("Invalid Move: " + bscomm.getMessage());
-			JOptionPane.showMessageDialog(new JFrame(), bscomm.getMessage());
+			System.out.println("Invalid Move: Commsp1turn, commsp1, clientp1");
+			System.out.println(bscomm.getp1Turn());
+			System.out.println(bscomm.getp1());
+			System.out.println(p1);
 
+			if(bscomm.getp1()==p1) {
+				msgText.setText("Invalid Move: " + bscomm.getMessage());
+				JOptionPane.showMessageDialog(new JFrame(), bscomm.getMessage());
+			}
 			
 		}
 		

@@ -19,6 +19,8 @@ public class battleshipComm  implements Serializable {
 	private boolean rightClick;
 	private int shipLength;
 	
+	private boolean p1;
+	private boolean newGame;
 	
 	//This constructor assigns the index of the button the player clicked
 	
@@ -61,6 +63,12 @@ public class battleshipComm  implements Serializable {
 	public void setrightClick(boolean rc) {
 		this.rightClick=rc;
 	}
+	public void setp1(boolean p1) {
+		this.p1 = p1;
+	}
+	public void setNewGame(boolean newGame) {
+		this.newGame = newGame;
+	}
 	
 	// Getters
 	public int getboardIndex() {
@@ -98,9 +106,12 @@ public class battleshipComm  implements Serializable {
 	public boolean getrightclick() {
 		return rightClick;
 	}
+	public boolean getp1() {
+		return p1;
+	}
+	public boolean getNewGame() {
+		return newGame;
+	}
 
 
 }
-	
-
-	
