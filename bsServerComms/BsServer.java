@@ -3,7 +3,7 @@ package bsServerComms;
 import ocsf.server.AbstractServer;
 import bsClientComms.LoginData;
 import bsClientComms.CreateAccountData;
-import bsClientComms.User;
+//import bsClientComms.User;
 import bsDatabase.BSDatabaseServer;
 import battleshipServer.*;
 

@@ -129,7 +129,7 @@ public class BattleshipController implements ActionListener, MouseListener{
 		Object source = ae.getSource();
 		
 		if(source == btnQuit) {
-			JOptionPane.showMessageDialog(new JFrame(), "Quit");
+			//JOptionPane.showMessageDialog(new JFrame(), "Quit");
 			bsdata.setgameOver(true);
 			bsdata.sendToServer();
 			bsview.dispose();
@@ -143,7 +143,7 @@ public class BattleshipController implements ActionListener, MouseListener{
 
 		}
 		if(source == btnForfeit) {
-			JOptionPane.showMessageDialog(new JFrame(), "Forfeit");
+			//JOptionPane.showMessageDialog(new JFrame(), "Forfeit");
 			bsdata.setgameOver(true);
 			bsdata.sendToServer();
 			//bsview.dispose();
@@ -217,9 +217,9 @@ public class BattleshipController implements ActionListener, MouseListener{
 		if(bscomm.getGameOver()) {
 			System.out.println(bscomm.getMessage());
 			msgText.setText(bscomm.getMessage());
-			//JOptionPane.showOptionDialog(new JFrame(), bscomm.getMessage());
-			 int choice = JOptionPane.showOptionDialog(null, 
-				      bscomm.getMessage()+" Want to play Again?", 
+			JOptionPane.showMessageDialog(new JFrame(), bscomm.getMessage());
+			int choice = JOptionPane.showOptionDialog(null, 
+				      bscomm.getMessage()+"", 
 				      "Quit?", 
 				      JOptionPane.YES_NO_OPTION, 
 				      JOptionPane.QUESTION_MESSAGE, 
@@ -228,6 +228,17 @@ public class BattleshipController implements ActionListener, MouseListener{
 				 bsdata.setNewGame(true);
 				 bsdata.setgameOver(false);
 				 bsdata.sendToServer();
+			 }	
+			 else {
+					bsdata.setgameOver(true);
+					bsdata.sendToServer();
+					bsview.dispose();
+					try {
+						bsdata.getClient().closeConnection();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			 }
 		}
 		else {
@@ -304,24 +315,24 @@ public class BattleshipController implements ActionListener, MouseListener{
 						//ship
 						//change to shiphit
 						
-						int y=0;
-						newSprite=bship;
-						if(!bscomm.getrightclick()) {
-							while(y<shipData[sprite]) {
-								
-								opponent[i+y].setIcon(newSprite);
-								y++;
-							}
-						}
-						else if(bscomm.getrightclick()) {
-							while(y<shipData[sprite]) {
-								
-								opponent[i+(y*10)].setIcon(newSprite);
-								y++;
-							}							
-						}
-
-						msgText.setText(bscomm.getMessage());
+//						int y=0;
+//						newSprite=bship;
+//						if(!bscomm.getrightclick()) {
+//							while(y<shipData[sprite]) {
+//								
+//								opponent[i+y].setIcon(newSprite);
+//								y++;
+//							}
+//						}
+//						else if(bscomm.getrightclick()) {
+//							while(y<shipData[sprite]) {
+//								
+//								opponent[i+(y*10)].setIcon(newSprite);
+//								y++;
+//							}							
+//						}
+//
+//						msgText.setText(bscomm.getMessage());
 						//decrement ship no
 						//messageToPlayer = new String("There is already a ship here!");
 						//p1shipData[p1boardData[boardIndex]]--;
@@ -372,28 +383,28 @@ public class BattleshipController implements ActionListener, MouseListener{
 					case 4:
 						//ship
 						//change to ship
-						int y=0;
-						newSprite=bship;
-						if(!bscomm.getrightclick()) {
-							while(y<shipData[sprite]) {
-								
-								player[i+y].setIcon(newSprite);
-								y++;
-							}
-						}
-						else if(bscomm.getrightclick()) {
-							while(y<shipData[sprite]) {
-								
-								player[i+(y*10)].setIcon(newSprite);
-								y++;
-							}							
-						}
-						msgText.setText(bscomm.getMessage());
-						//decrement ship no
-						//messageToPlayer = new String("There is already a ship here!");
-						//p1shipData[p1boardData[boardIndex]]--;
-						//p1boardData[boardIndex]=5;
-						//p1Turn = false;
+//						int y=0;
+//						newSprite=bship;
+//						if(!bscomm.getrightclick()) {
+//							while(y<shipData[sprite]) {
+//								
+//								player[i+y].setIcon(newSprite);
+//								y++;
+//							}
+//						}
+//						else if(bscomm.getrightclick()) {
+//							while(y<shipData[sprite]) {
+//								
+//								player[i+(y*10)].setIcon(newSprite);
+//								y++;
+//							}							
+//						}
+//						msgText.setText(bscomm.getMessage());
+//						//decrement ship no
+//						//messageToPlayer = new String("There is already a ship here!");
+//						//p1shipData[p1boardData[boardIndex]]--;
+//						//p1boardData[boardIndex]=5;
+//						//p1Turn = false;
 						break;
 					case 5:
 						//hit here
