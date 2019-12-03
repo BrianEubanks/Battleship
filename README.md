@@ -10,7 +10,7 @@ Created by Austin Ahne, Kevin Camp, Brian Eubanks, Job McCully, Josh McIlvoy
 
 ### Importing jar files
 
-Ensure that both ocsf.jar and mysql-connector-java-5.1.40-bin.jar are added to the project build path.
+Ensure that both ocsf.jar and mysql-connector-java-5.1.40-bin.jar are added to the project build path (right click project, build path->libraries->add jars->add ocsf and mysql jar files located within project directory).
 
 ### bsDBUser.sql
 
