@@ -52,6 +52,7 @@ public class playGame {
 	private boolean placeShipsp2;
 	private boolean p1Turn;
 	private boolean validMove;
+	private boolean gameOver;
 	
 	//Message to Client
 	// Used to display the result of the turn to the player
@@ -96,6 +97,7 @@ public class playGame {
 		//when place ships is false, the game starts.
 		
 		placeShips=true;
+		gameOver=false;
 		
 		//Set player1 turn to true. Use this to alternate turns in gameplay
 		p1Turn = true;
@@ -430,6 +432,7 @@ public class playGame {
 			if(p2shipCount==0) {
 				p1Turn=true;
 				endGame(new battleshipComm(0));
+				gameOver=true;
 			}
 			
 		}
@@ -446,6 +449,7 @@ public class playGame {
 			if(p1shipCount==0) {
 				p1Turn=false;
 				endGame(new battleshipComm(0));
+				gameOver=true;
 			}
 		}
 	}
@@ -607,6 +611,7 @@ public class playGame {
 		bsc.setp1(player1);
 		bsc.setValidMove(validMove);
 		bsc.setp1BoardClick(boardClick);
+		bsc.setGameOver(gameOver);
 		System.out.println(messageToPlayer);
 	}
 	
@@ -616,8 +621,8 @@ public class playGame {
 	
 	
 	//End Game
-	public void endGame(battleshipComm bsc) {
-		this.bsc = bsc;
+	public void endGame(battleshipComm bs) {
+		bsc = new battleshipComm(0);
 		if(p1Turn) {
 			messageToPlayer = new String("Player1 Wins!!! ");
 		}
@@ -629,8 +634,8 @@ public class playGame {
 		bsc.setGameOver(true);
 		System.out.println(messageToPlayer);
 	}
-	public void forfeitGame(battleshipComm bsc) {
-		this.bsc = bsc;
+	public void forfeitGame(battleshipComm bs) {
+		bsc = new battleshipComm(0);
 		if(!bsc.getp1Turn()) {
 			messageToPlayer = new String("Player1 Wins!!! ");
 		}

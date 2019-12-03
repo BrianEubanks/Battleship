@@ -218,28 +218,28 @@ public class BattleshipController implements ActionListener, MouseListener{
 			System.out.println(bscomm.getMessage());
 			msgText.setText(bscomm.getMessage());
 			JOptionPane.showMessageDialog(new JFrame(), bscomm.getMessage());
-			int choice = JOptionPane.showOptionDialog(null, 
-				      bscomm.getMessage()+"", 
-				      "Quit?", 
-				      JOptionPane.YES_NO_OPTION, 
-				      JOptionPane.QUESTION_MESSAGE, 
-				      null, null, null);
-			 if (choice == JOptionPane.YES_OPTION) {
-				 bsdata.setNewGame(true);
-				 bsdata.setgameOver(false);
-				 bsdata.sendToServer();
-			 }	
-			 else {
-					bsdata.setgameOver(true);
-					bsdata.sendToServer();
-					bsview.dispose();
-					try {
-						bsdata.getClient().closeConnection();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			 }
+//			int choice = JOptionPane.showOptionDialog(null, 
+//				      bscomm.getMessage()+"", 
+//				      "Quit?", 
+//				      JOptionPane.YES_NO_OPTION, 
+//				      JOptionPane.QUESTION_MESSAGE, 
+//				      null, null, null);
+//			 if (choice == JOptionPane.YES_OPTION) {
+//				 bsdata.setNewGame(true);
+//				 bsdata.setgameOver(false);
+//				 bsdata.sendToServer();
+//			 }	
+//			 else {
+//					bsdata.setgameOver(true);
+//					bsdata.sendToServer();
+//					bsview.dispose();
+//					try {
+//						bsdata.getClient().closeConnection();
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//			 }
 		}
 		else {
 		if (bscomm.getValidMove()) {
